@@ -186,7 +186,7 @@ Alternative definition (similar useful like the previous definitions):
 -   Child height of 100 children as a function of their age
 
 ::: {style="text-align: center"}
-![Figure: Height of 20 children as a function of their age](images/HeightAge.png){width="200"}
+![Figure: Height of 20 children as a function of their age](HeightAge.png){fig-align="center"}
 :::
 
 ## High-frequency data {.smaller}
