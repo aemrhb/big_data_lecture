@@ -1,0 +1,61 @@
+---
+title: "Big Geospatial Data"
+author: " Prof. Dr. Philipp Otto <br>Leibniz Universtity Hannover, Germany<br>April 21, 2023"
+
+format: 
+  revealjs:
+    footer: "Philipp Otto (Leibniz University Hannover)"
+    logo: logo.png
+    theme: [default, ikg.scss]
+    incremental: false
+    scrollable: true
+    slide-number: true
+    fig-width: 9
+    fig-height: 5
+    smaller: true
+    transition: slide
+    auto-animate: true
+    touch: true
+    toc: false
+    chalkboard: 
+      theme: chalkboard
+callout-appearance: simple
+number-sections: true
+editor: source
+---
+
+## references
+
+-   Contact : <br>Individual office hours on appointment <br>philipp.otto\@ikg.uni-hannover.de<br>
+
+-   Schedule of the course : <br>Weekly lectures: Philipp Otto (Friday 15:45 - 17:15, A255) <br>Tutorials: Mohammadreza Nasiriboroujeni (Friday 17:30 - 19:00 , A255) <br>Home assignments: passing the home assignments is not mandatory, but they will be discussed in the tutorials
+
+## references
+
+-   Examination : <br> 5 ECTS: oral examination (25 minutes)
+-   Oral Examination : <br> In total 25 minutes, structured as follows: <br> 10 minutes: presentation of a topic of personal choice <br> 10 minutes: questions about the contents of the lecture <br> 5 minutes: questions about discussed program implementations
+
+## Literature {.smaller}
+
+<br>Bivand, R. S., Pebesma, E. J., Gomez-Rubio, V. & Pebesma, E. J. (2008), Applied spatial data analysis with R, Vol. 747248717, Springer. <br>Cressie, N. (1993), Statistics for Spatial Data, Wiley. URL: https://books.google.de/books?id=4L dCgAAQBAJ <br>Cressie, N. & Wikle, C. K. (2011), Statistics for Spatio-Temporal Data, Wiley. <br>Dalgaard, P. (2008), Introductory statistics with R, Springer Science & Business Media. <br>Karimi, H. A. (2014), Big Data: techniques and technologies in geoinformatics, Crc Press.
+
+## Lectures {.smaller}
+
+| Date                        | Room   | Topic                                                             |
+|-----------------------|-----------------------|:-------------------------|
+| 15.04.22                    | \-     | \-                                                                |
+| 22.04.22                    | A255   | Introduction + big/spatial data (chapter 0, 1)                    |
+| 29.04.22                    | A255   | Spatial data analysis (chapter 1)                                 |
+| 06.05.22                    | A255   | Dimensionality reduction (chapter 2)                              |
+| 13.05.22                    | A255   | Dimensionality reduction (chapter 2)                              |
+| 20.05.22                    | A255   | \-                                                                |
+| 27.05.22                    | A255   | Programming languages for spatial data (chapter 3)                |
+| 03.06.22                    | \-     | Self study of the scientific papers (no lectures, only tutorials) |
+| 10.06.22                    | \-     | Holidays (Pfingsten, self study of the scientific papers)         |
+| 17.06.22                    | A255   | Computational complexity (chapter 3)                              |
+| 24.06.22                    | A255   | Discussion of scientific papers (Banerjee 2005)                   |
+| 01.07.22                    | A255   | Discussion of scientific papers (Porcu et al. 2016)               |
+| 08.07.22                    | A255   | Discussion of scientific papers (Vetter et al. 2014)              |
+| 15.07.22                    | A255   | Discussion of scientific papers (Werner 2019)                     |
+| 23.07.22                    | A255   | Q-A session                                                       |
+| 08.08.22 -- 12.08.22 (exp.) | At IKG | **Oral Exams**                                                    |

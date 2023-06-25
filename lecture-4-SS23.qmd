@@ -1,0 +1,395 @@
+---
+title: "Big Geospatial Data"
+author: " Prof.Dr. Philipp Otto <br>Leibniz Universtity Hannover, Germany<br>April 21, 2023"
+format: 
+  revealjs:
+    footer: "Philipp Otto (Leibniz University Hannover)"
+    logo: logo.png
+    theme: [default, ikg.scss]
+    incremental: false
+    scrollable: true
+    slide-number: true
+    fig-width: 9
+    fig-height: 5
+    smaller: true
+    transition: slide
+    auto-animate: true
+    touch: true
+    toc: false
+    chalkboard: 
+       theme: chalkboard
+callout-appearance: simple
+number-sections: true
+editor: source
+---
+
+## Programming Languages
+
+A choice of languages for (Spatial) Big Data
+
+-   Python
+-   R
+-   MATLAB and Octave
+-   C++
+-   Java
+-   Scala and some more specific languages depending on the actual context.
+
+## Programming Languages
+
+Python: Advantages
+
+-   Nice, modern scripting language
+-   Huge amount of software available
+-   C++ friendly (easy to extend towards high performance)
+
+Drawbacks
+
+-   Difficult to read (?)
+-   Software Quality (especially packages) varies
+-   Easy to break: Virtual environment stuff, versions, python2 vs. python3
+
+## Programming Languages
+
+R: Advantages
+
+-   Classical language, good documentation
+
+-   Uniform names for common actions called generic functions (fit, model, predict, plot,...)
+
+-   Extremely C++ friendly (easy to extend towards high performance)
+
+-   Very good plot defaults for scientific computing
+
+-   Nice IDE (RStudio)
+
+-   CRAN -Peer-Reviewed source code packages for almost everything in statistical computing
+
+-   Functional core
+
+Drawbacks
+
+-   Not the easiest to start with
+-   Sometimes Difficult to read due to complex statements
+
+## Programming Languages
+
+::: {layout-nrow="1" style="text-align: center"}
+![Example: Trajectory Clustering Using R](9.jpg){fig-align="center"}
+:::
+
+## Programming Languages
+
+![](10.jpg){fig-align="center"}
+
+## Programming Languages
+
+![](11.jpg){fig-align="center"}
+
+## Programming Languages
+
+![](12.jpg){fig-align="center"}
+
+## Programming Languages
+
+![](13.jpg){fig-align="center"}
+
+## Programming Languages
+
+```{r}
+#| echo: true
+#| fig-align: "center"
+#| 
+#install_github("mwernerds/trajcomp/r-package/trajcomp") 
+library(trajcomp)
+data(smallprague)
+
+plot(smallprague,t="l");
+
+```
+
+## Programming Languages
+
+```{r}
+#| echo: true
+#| fig-align: "center"
+#| 
+segments = traclus(smallprague, 25,5)
+head(segments)
+A = segments[,1:4] # take only coordinates
+A$n1 = NaN # add a NaN column
+A$n2 = NaN;
+A = t(matrix(as.vector(t(A)),nrow=2)) # Reshape it into suitable form
+plot(A,t="l") 
+points(A,pty=2)
+
+```
+
+## programning languages
+
+```{r}
+#| echo: true
+#| fig-align: "center"
+plot(smallprague,t="l",col="gray")
+cluster_to_color <- function(r)
+{
+if (r == -2){ return ("red");
+}
+if (r == -1){
+return("black"); }
+if (r == 0){
+return ("blue");
+}
+if(r == 1){
+return ("green"); }
+}
+library(plyr)
+  ddply(segments,.(cluster),function(x){
+    points(c(x$x1,x$x2),c(x$y1,x$y2),col=cluster_to_color(x$cluster[1]));
+    })
+
+```
+
+## Programming Languages
+
+**MATLAB/Octave:**
+
+Advantages
+
+-   Matrix-centered multi-purpose programming
+-   Very good documentation, wide usage in the field
+-   Extensible
+-   High-quality toolboxes (however, expensive!) for MATLAB
+
+Drawbacks
+
+-   Expensive
+-   Non Open Source
+-   Open-Source version Octave is not fully equivalent
+
+## Programming Languages
+
+**C++:**
+
+Advantages
+
+-   High performance
+-   Extremely high-quality libraries (boost, eigen)
+-   Platform-independence even towards GPU and Embedded
+-   Embeddable into Python, Java, R and MATLAB (almost anywhere)
+-   full support for generic programming
+-   very modern standard (C++17 is ready)
+
+Drawbacks
+
+-   Compiler errors are difficult to read (especially, when using generics)
+-   Some inconsistencies between compilers
+
+## Programming Languages
+
+Example: Working with Astronomical Images from C++ (libTIFF library, 980 MB file, http://www.spacetelescope.org/images/heic1620a/)
+
+![](16.jpg){fig-align="center"}
+
+## Programming Languages
+
+![](17.jpg){fig-align="center"}
+
+## Programming Languages
+
+**Java:**
+
+Advantages
+
+-   Good performance
+-   High-quality design and runtime
+-   Platform-independence
+-   Easy to learn (very good error messages)
+-   Safe memory management
+
+Drawbacks
+
+-   Unable to unlock some aspects of modern computers (GPUs, specific instructions)
+-   Overhead produced by memory management
+
+## Programming Languages
+
+**Scala:**
+
+Advantages
+
+-   A modern approach to functional programming
+-   Compatible with Java, running on top of JVM
+-   Platform-independence
+-   Easy to learn (very good error messages)
+-   Safe memory management
+
+Drawbacks
+
+-   Unable to unlock some aspects of modern computers (GPUs, specific instructions)
+-   Overhead produced by memory management
+
+## Programming Languages
+
+Summary:
+
+-   Python: A useful scripting language with high adoption rate, but sometimes easy to break
+-   R: A fully functional data science environment that feels like a classical imperative scripting language
+-   MATLAB and Octave: If you need matrices and matrix algebra, then consider MATLAB and Octave.
+-   C++: You need to scale up to unlimited performance still using a high-quality, nice language: (Modern!) C++ is here for you
+-   Java: You need to scale out? Java is the way to go. Not the fastest, not the most efficient, but easy to use and not so error-prone...
+-   Scala: You chose Java? You need higher order functions and more parallelism? Use Scala.
+
+
+
+::: {style="text-align: center"}
+# Computational Complexity
+:::
+
+## Computational Complexity
+
+-   Computational problems are types of questions that might be solvable by computers
+    -   Infinite set of inputs + question to be answered
+    -   Input set ${x} \Longrightarrow f({x}) \Longrightarrow$ Output $y$
+-   Decision problems are all problems with a binary output $y = \{0, 1\}$ (yes/no answers)
+
+::: callout-tip
+## Example
+
+Input: A directed graph $G = (V, E)$ and two vertices $v_1, v_2 \in V$ . <br> Question: Is there a path in G from $v_1$ to $v_2$?
+:::
+
+-   How efficiently can we solve this problem?
+
+## Computational Complexity
+
+::: {style="text-align: center"}
+![(First home assignment)](Jr85DYQc.png){fig-align="center"}
+:::
+
+## Computational Complexity
+
+![](konigsberg-1581-22.jpeg){fig-align="center"}
+
+## Computational Complexity
+
+The citizens of K ̈onigsberg spent their Sundays walking around town, enjoying their beautiful city. In the process, they came up with a game - which, as it turned out, proved to be incredibly difficult to accomplish. The goal was to walk across all of the seven bridges crossing the islands only once, without ever repeating a single bridge in the course of one's walk. At first, when people asked Euler to solve this problem, he brushed it o↵, thinking that it had nothing to do with mathematics, and therefore wasn't really worth his time. But the more that he thought about it, the more intrigued he became. In a letter to a mathematician friend of his, he wrote: This question is so banal, but seemed to me worthy of attention in that \[neither\] geometry, nor algebra, nor even the art of counting was sufficient to solve it.
+
+## Computational Complexity
+
+-   But, the initial question was: how efficiently can we solve this problem?
+-   Efficiency: the good use of resources (inputs) in a way that does not waste any to produce a certain output
+-   Measure of resource:
+    -   Time (how much time does it take to run my algorithm?)
+    -   Memory (how much memory does the algorithm need to run?)
+-   But, there always different types of inputs:
+    -   Worst-case analysis (how much resources will the algorithm use in the worst case?)
+    -   Average-case analysis (how much resources will it use on average?)
+-   The complexity of a problem is the complexity of the best algorithm that solves that problem.
+
+
+## Computational Complexity
+
+-   Suppose there are two functions$f:N\Longrightarrow N$ and $g:N \Longrightarrow N$
+-   $f$ is the function that specifies the amount $f(n)$ of time/memory needed in the worstcase to solve an input of size $n$, e.g., $f(n) = 3n2 + n - 100$
+-   If $f$ gives the amount of time needed, we speak of **time complexity**
+-   If $f$ gives the amount of memory needed, we speak of **space complexity**
+-   Generally, it is difficult to compute precisely the worst-case and the average-case complexity (also depends on hardware, model of computation etc.) $\Longrightarrow$Asymptotic complexity (behavior of the complexity for large $n$)
+-   Thus, say that $g$ is some approximation $f$, e.g., $g = n^2$
+-   More precisely, we assume that there exist some $n_0 \in N$ and some $c \in R^+$ such that $f(n) \leqslant cg(n)$ for all $n \geqslant n_0$
+-   If and only if this holds true, we say that $f(n)$ is in $O(g(n))$ (**Big-O notation**)
+-   In other words, from some $n_0$ onwards, the function $f$ grows at most as fast as the function $g$
+
+## Deterministic Complexity Classes
+
+-   A complexity class $C$ is a set of decision problems Typically, a complexity classes are defined to contain problems with similar worst-case complexity bounds
+    -   $C_T (f (n))$ is the set of all decision problems that can be solved by an algorithm that runs in time $O(f(n))$
+    -   $C_S(f(n))$ is the set of all decision problems that can be solved by an algorithm that needs $O(f(n))$ memory space
+-   These are sometimes called deterministic complexity classes, because the algorithms used to define them are deterministic
+
+## Deterministic Complexity Classes
+
+::: callout-tip
+## Important Complexity Classes
+
+All (decision) problems solvable in polynomial time, $P = \bigcup_{k \in\mathbb{N}}C_T (n^k)$ <br> All (decision) problems solvable in exponential time, $EXP = \bigcup_{k \in\mathbb{N}}C_T (2^{(n^k)})$ <br> All (decision) problems solvable in finite time, $R$
+:::
+
+-   Problem lying in $P$ are often called tractable, whereas problem in $EXP$ are called intractable, e.g., time needed for $10^{10}$ steps per second:
+
+| $n$  |   $n^2$ steps   |     $2^n$ steps      |
+|:----:|:---------------:|:--------------------:|
+|  2   | 0.00000002 msec |   0.00000002 msec    |
+|  5   | 0.00000015 msec |   0.00000019 msec    |
+|  20  |  0.00004 msec   |      0.10 msec       |
+|  50  |  0.00025 msec   |      31.3 hours      |
+| 100  |    0.001msec    | $9.4·10^{11}$ years  |
+| 1000 |    0.100msec    | $7.9·10^{282}$ years |
+
+## Deterministic Complexity Classes
+
+-   Most of the decision problems (almost every decision problem) are unsolvable (they are not in $R$), e.g.,
+    -   Halting problem: given an arbitrary program (input), does it ever stop running? Output: yes/no
+
+Proof:
+
+-   Basically, any program is a binary string ($\Longrightarrow$ it can be considered as natural number)
+
+-   Space of all computer programs is $\mathbb{N}$ (countably infinite)
+
+-   A decision problem can be considered as function mapping an input (binary string) to a binary number, i.e., $d : \mathbb{N} \longrightarrow \{0, 1\}$
+
+-   That is, any decision problem is an infinite string of binary values
+
+-   Space of all decision problems is $\mathbb{R}$ (uncountably infinite)
+
+-   $|R| \gg |N|$ (There are much more decision problems than computer programs)
+
+## Nondeterministic Complexity Classes
+
+-   Nondeterministic computation model: algorithm makes guesses (yes/no) and the guesses are guaranteed to lead to 'yes' if possible
+-   Nondeterministic classes: problems that can be solved by first guessing a candidate solution of size $O(f(n))$, and then in time $O(f(n))$ checking with a deterministic algorithm that it is really a valid solution
+
+::: callout-tip
+## Important Complexity Classes
+
+All (decision) problems solvable in nondeterministic polynomial time, $NP$ (decision problem with solutions, which can be checked in polynomial time)
+
+All (decision) problems solvable in nondeterministic exponential time, $NEXP$ (decision problem with solutions, which can be checked in exponential time)
+:::
+
+## Nondeterministic Complexity Classes
+
+::: callout-tip
+## Example
+
+Input: A list of $n$ cities; for each pair of cities, the distance between them; and some $m \in \mathbb{N}$. Question: Is there a route of length $\leq m$ that visits each city exactly once?
+:::
+
+-   One algorithm to solve TSP enumerates all possible routes that visit each city exactly once, and checks whether one of these is short enough. This takes time $O(n!)$.
+
+-   Candidate solutions are routes that visit each city exactly once, i.e., permutations of $\{1,...,n\}$. These are of size $O(n \log n)$.
+
+-   Checking whether such a route is of length $\leq m$ can be done in (deterministic) polynomial time.
+
+## Nondeterministic Complexity Classes
+
+-   Generally, it holds that $P \subset EXP$
+-   Moreover, $P \subseteq NP \subseteq EXP$ ( $\longrightarrow$ one relation must be strict $(\subset)!$)
+-   Most experts believe that they are all strict
+-   The answer whether $P = NP$ is worth one million dollars
+
+## Hardness and Completeness
+
+::: callout-tip
+## $K$-hard
+
+Let $K$ be a complexity class. Any problem $D$ is called $K$-hard, if for every problem $L \in K$, there is a polynomial-time reduction from $L$ to $D$. Hence, the $K$-hard problems include the hardest problems in $K$, and even harder ones.
+:::
+
+::: callout-tip
+## $K$ -complete
+
+Let $K$ be a complexity class. Any problem $D$ is $K$-hard and $D \in K$. Hence, the K-complete are the hardest problems in $K$, i.e., they must be in $K$.
+:::
+
+-   For instance, the example above (Travelling Salesperson Problem) is $NP$-complete

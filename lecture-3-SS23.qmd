@@ -1,0 +1,266 @@
+---
+title: "Big Geospatial Data"
+author: " Prof. Dr. Philipp Otto <br>Leibniz Universtity Hannover, Germany<br>April 21, 2023"
+format: 
+  revealjs:
+    footer: "Philipp Otto (Leibniz University Hannover)"
+    logo: logo.png
+    theme: [default, ikg.scss]
+    incremental: false
+    scrollable: true
+    slide-number: true
+    fig-width: 9
+    fig-height: 5
+    smaller: true
+    transition: slide
+    auto-animate: true
+    touch: true
+    toc: false
+    chalkboard: 
+       theme: chalkboard
+callout-appearance: simple
+number-sections: true
+editor: source
+---
+
+### Spatial dependence
+
+Observations are likely to be influenced by observations in the close neighborhood. That means we typically observe similar patterns for observations, which are close in space. This influence usually weakens with increasing distance between the observations.
+
+::: {.callout-tip style="text-align: center"}
+## Spatial stochastic process
+
+The random process ${Z(s)}$ can be defined by a distribution $F_{Z_(s_1)},...,F_{Z_(s_n)}$. $$F_{Z_(s_1)},...,Z(s_n)(z_1, . . . , z_n) = P (Z(s_1) ≤ z_1, . . . , Z(s_n) ≤ z_n)$$ $P$ is called probability measure.
+:::
+
+There are certain measures describing characteristics/properties of a distribution function $F$, like the expectation of $F$, (co-)variance of $F$, etc. These measures also define the spatial dependence.
+
+------------------------------------------------------------------------
+
+::: {.callout-tip style="text-align: center"}
+## First-order stationarity
+
+If the expectation
+
+::: {style="text-align: center"}
+$E(Z(s_n)) = \mu$ for all $i$
+
+the process is called first-order stationary. That is, the mean does not depend on the location.
+:::
+:::
+
+::: {.callout-tip style="text-align: center"}
+## Spatial dependence
+
+Spatial dependence is characterized by $$Cov(Z(si),Z(sj)) $$ for $i \neq j$. We often need to assume additionally that $$Cov(Z(si),Z(sj))=C(si −sj),$$ that is, the covariance is a function of the difference between $s_i$ and $s_j$.
+:::
+
+::: {style="text-align: center"}
+# Some theoretical aspects, if the dimension gets large
+:::
+
+## Spatial Interpolation
+
+Generally, this (spatial) covariance matrix has dimension n × n. For estimation of spatial models and/or spatial kriging (predictions), the covariance matrix must be inverted or the determinant of such matrices must be computed.
+
+::: {.callout-tip style="text-align: center"}
+Let ${Z(s)}$ be a spatial random process with a known covariance function $C(·)$. The process is observed at $n$ locations $s_1, . . . , s_n$. Problem: Predict the $Z(s^∗)$ at an arbitrary location $s^∗ ∈ D$.
+:::
+
+The best linear unbiased predictor $\hat{Z}(s^∗)$ is
+
+$$\hat{Z}(s^∗) = c^*{}' C^{-1}(z(s_1), . . . , z(s_k))′$$
+
+with covariance matrix $C = (c_{ij})_{i,j=1,...,n}$ and a vector $c^∗ = (c^∗_i )_{i=1,...,n}$. The elements of the covariance $c_{ij}$ and $c^∗_i$ are given by the covariance function $C (·)$, that is, $c_{ij} = C (s_i − s_j )$ and $c^∗_i = C(s_i − s^∗)$, respectively.
+
+------------------------------------------------------------------------
+
+::: callout-tip
+Arithmetic complexity:
+
+-   Matrix multiplication $O(n^3)$ (better algorithms $O(n^{2.373})$)
+-   Matrix inversion $O(n^3)$ (better algorithms $O(n^{2.373})$)
+-   Determinant $O(n!)$ (better algorithms $O(n^3)$ or $O(n^{2.373})$)
+:::
+
+Thus, if $n$ gets large, the computation might not be feasible and methods for reducing the dimension are needed. For instance, sparse representations of the covariance matrix may reduce the required arithmetic complexity, computer memory (RAM), and time complexity.
+
+------------------------------------------------------------------------
+
+::: callout-tip
+## Dimension Reduction
+
+-   Sparse covariance matrices
+-   Covariance tapering
+-   Ordering of sparse matrices
+-   Fixed-rank kriging
+-   Full-scale approximation
+-   ...
+:::
+
+------------------------------------------------------------------------
+
+## Sparsity
+
+::: callout-tip
+## Sparsity
+
+A sparse matrix $M = (m_{ij})_{i,j=1,...,n}$ is a matrix in which most of the elements are zero, i.e., $m_{ij} = 0$ for most $i, j = 1, ..., n$. Typically, it assumed that the percentage of non-zero elements is smaller than 50 per cent.
+:::
+
+::: {layout-nrow="1" style="text-align: center"}
+![](Matrix_A-1.png){fig-align="center" width="400"} ![](Matrix_A_sparse1024_1.jpg){fig-align="center" width="400"}
+:::
+
+------------------------------------------------------------------------
+
+## Sparsity
+
+::: callout-tip
+## Band matrix
+
+A band or banded matrix $B = (b_{ij})_{i,j=1,...,n}$ is a sparse matrix, whose non-zero entries are confined to a diagonal band,i.e.,$b_{ij} =0$ if $j<i−k$ or $j>i+k$ for some $k<n$.
+:::
+
+::: {layout-nrow="1" style="text-align: center"}
+![](Matrix_A_sparse1024_1.jpg){width="400"}
+
+![](Matrix_A_band-1.png){width="400"}
+:::
+
+## Sparsity
+
+-   Methods for ordering matrices (bandwidth minimization problem)
+    -   Row-by-row ordering
+    -   Minimal-degree ordering
+    -   Cuthill--McKee
+
+for example,Cuthill--McKee algorithm :
+
+-   Choose $R = {j}$ with $min_j \sum_{i} i a_{ij} (a_{ij} ∈ {0,1})$
+
+-   For $i = 1,2,...$ while $|R| < n$:
+
+    -   $A_i = Adj(R_i)\setminus{R}$ , where $R_i$ is the $i$-th component of $R$ and $Adj(R_i)$ are all positive entries $a_{R_ij}$ (adjacency set)
+    -   Sort $A_i$ with ascending node degree (number of positive entries per row)
+    -   Append $A_i$ to $R$
+
+::: {style="text-align: center"}
+# Covariance Tapering
+:::
+
+## Covariance Tapering
+
+![Exponential covariance function](Covariance_Function-1.png)
+
+## Covariance Tapering
+
+-   Idea: introduce zeros into $C$ in order to make it sparse
+-   $C$ is a covariance matrix, thus it must be positive definite
+-   Let $C_θ$ be a covariance function, i.e., it is positive definite, which is zero outside some range
+-   This range is determined by a parameter $θ$
+-   The tapered covariance function is then given by the product $$C_{tap}(s_j − s_i) = C(s_j − s_i)C_θ(s_j − s_i)$$
+-   Direct product of two positive definite matrices is again positive definite (Horn and Johnson 1994, theorem 5.2.1) $\Longrightarrow$ $C_{tap}$ is a covariance matrix
+
+## Covariance Tapering
+
+-   However, $C^{−1}_{tap}$ is not necessarily sparse if $C_{tap}$ is sparse <br> $\Longrightarrow$ $C$ must be "properly" permuted (see above)
+-   Under certain conditions, the mean-squared error of kriging predictions using tapered covariance functions converge to the minimal error
+
+::: callout-tip
+## Further reading
+
+Furrer, R., Genton, M. G., Nychka, D. (2006). Covariance tapering for interpolation of large spatial datasets. Journal of Computational and Graphical Statistics, 15(3), 502-523.
+:::
+
+::: {style="text-align: center"}
+# Fixed Rank Kriging
+:::
+
+## Spatial Interpolation
+
+::: callout-tip
+Recall: Let ${Z(s)}$ be a spatial random process with a known covariance function $C(·)$. The process is observed at n locations $s_1, . . . , s_n$. Problem: Predict the $Z(s^∗)$ at an arbitrary location $s^∗ ∈ D$.
+:::
+
+-   Idea: approximate spatial process by random effects and several basis functions
+-   The number of basis functions $r$ should be much smaller than $n$
+
+## Fixed-Rank Kriging
+
+::: callout-tip
+Suppose that ${Z(s)}$ can be specified as
+
+::: {style="text-align: center"}
+$Z(s) = S(s)′η + ξ(s)$ for all $s ∈ D$ .
+
+The coefficients of the random effects are denoted by $η = (η_1, . . . , η_r)′$ weighting the corresponding basis functions $S(s) = (S_1(s), . . . , S_r(s))′$.
+:::
+:::
+
+The random effects $η$ are assumed to have zero mean and covariance matrix $K$. If $ξ(s)$ is a spatial white noise process, the covariance function is given by
+
+$$C(s_i,s_j) = S(s_i)′KS(s_j).$$ hus, the covariance matrix is $$Σ = S K S ′ + σ_ξ^2 V_ξ .$$ Note that $S$ is an $n × r$ dimensional matrix
+
+## Fixed-Rank Kriging
+
+To compute the inverse of the covariance matrix, the Sherman-Morrison-Woodsbury representation can be applied, that is,
+
+$$(A + UBV)^{−1} = A^{−1} − A^{−1}U(I + BVA^{−1}U)^{−1}BVA^{−1} .$$ Hence $Σ ^{− 1}$ is
+
+$$Σ ^{− 1} = ( σ_ξ^2 V_ξ )^{-1} − ( σ_ξ^2 V_ξ )^{-1} S [ \, K^{-1}+ S ′ ( σ_ξ^2 V_ξ )^{-1} S ] \, S ′ (σ_ξ^2 V_ξ ξ )^{-1} .$$ It is important to note that the computation of this quantity only requires the computation of the inverse of the $r × r$ matrix $K$ (and $σ_ξ^2 V_ξ$ ). Thus, the computational costs reduce from $O(n^3)$ to $O(nr^2)$.
+
+## 
+
+Suppose that ${Z(s)}$ can be specified as
+
+::: {style="text-align: center"}
+$Z(s) = S(s)′η + ξ(s)$ for all $s ∈ D$ .
+:::
+
+The coefficients of the random effects are denoted by $η = (η_1, . . . , η_r)′$ weighting the corresponding basis functions $S(s) = (S_1(s), . . . , S_r(s))′.$ The random effects $η$ are assumed to have zero mean and covariance matrix $K$. If $ξ(s)$ is a spatial white noise process, the covariance function is given by
+
+$$C(s_i,s_j) = S(s_i)′KS(s_j).$$
+
+Thus, the covariance matrix is $$Σ = S K S ′ +  σ_ξ^2 V_ξ  .$$ $$(A + UBV)^{−1} = A^{−1} − A^{−1}U(I + BVA^{−1}U)^{−1}BVA^{−1} .$$ $$Σ ^{− 1} = ( σ_ξ^2 V_ξ )^{-1} − ( σ_ξ^2 V_ξ )^{-1} S [ \, K^{-1}+ S ′ ( σ_ξ^2 V_ξ )^{-1} S ] \, S ′ (σ_ξ^2 V_ξ ξ )^{-1} .$$
+
+## Fixed-Rank Kriging
+
+How to select basis functions?
+
+-   spline basis functions
+-   wavelet basis functions
+-   radial basis functions
+
+Where the center points of the basis functions should be placed?
+
+-   equidistant points
+-   multiple resolutions
+-   penalized approaches (machine learning)
+
+An increasing number of basis functions leads to better approximations, but causes higher computational costs. Thus, there is a trade-off between computational advantages and the explained spatial variations.
+
+## Fixed-Rank Kriging
+
+::: {style="text-align: center"}
+# Full-Scale Approximation
+:::
+
+## Full-Scale Approximation
+
+-   Combination of fixed-rank kriging and covariance tapering
+-   This leads to the covariance function
+
+$$ C_ξ(s_i,s_j) = [ \,C_Y (s_i,s_j) − S(s_i)′KS(s_j)] \,C_{tap}(s_i,s_j).$$
+
+and the covariance matrix
+
+$$ Σ = S K S ′ + C_ξ + σ_ξ^2 V_ξ .$$
+
+-   Computing the inverse/determinant has computational complexity of $O(nr^2 + nk^2)$, which is still linear in $n$
+
+## 
+
+::: {.callout-tip style="text-align: center"}
+Vetter, P., Schmid, W., Schwarze, R. (2016). Efficient approximation of the spatial covariance function for large datasets - analysis of atmospheric CO2 concentrations, Journal of Environmental Statistics, 6(3)
+:::

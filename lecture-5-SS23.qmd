@@ -1,0 +1,465 @@
+---
+title: "Big Geospatial Data"
+author: " Prof. Dr. Philipp Otto <br>Leibniz Universtity Hannover, Germany<br>, 2023"
+format: 
+  revealjs:
+    footer: "Philipp Otto (Leibniz University Hannover)"
+    logo: logo.png
+    theme: [default, ikg.scss]
+    incremental: false
+    scrollable: true
+    slide-number: true
+    fig-width: 9
+    fig-height: 5
+    smaller: true
+    transition: slide
+    auto-animate: true
+    touch: true
+    toc: false
+    chalkboard: 
+       theme: chalkboard
+callout-appearance: simple
+number-sections: true
+editor: source
+---
+
+::: {style="text-align: center"}
+# Parallel Computing
+:::
+
+## Parallel Computing
+
+**Classical, serial computing**
+
+. . .
+
+-   A problem is broken into a discrete series of instructions
+
+. . .
+
+-   Instructions are executed sequentially one after another
+
+. . .
+
+-   Executed on a single processor
+
+. . .
+
+-   Only one instruction may execute at any moment in time
+
+. . .
+
+-   Instructions may depend on the results of previous instructions
+
+```{mermaid}
+flowchart LR
+  A(Input . ) --> B[Task 1  .]
+  B --> C[task 2  .]
+  C --> D[...  .]
+  D --> E(Output  .)
+
+  style A  stroke:#333, stroke-width:2px , width:70px, height:30px , font-size:25px;
+  style B   stroke:#333, stroke-width:2px , width:300px, height:30px;
+  style C  stroke:#333, stroke-width:2px , width:200px, height:30px;
+  style D  stroke:#333, stroke-width:2px , width:50px, height:30px;
+  style E  stroke:#333, stroke-width:2px , width:70px, height:30px;
+```
+
+## Parallel computing
+
+**Parallel computing**
+
+. . .
+
+-   A problem is broken into discrete parts that can be solved concurrently
+
+. . .
+
+-   Each part is further broken down to a series of instructions
+
+. . .
+
+-   Instructions from each part execute simultaneously on different processors
+
+. . .
+
+-   Final output must be summarized
+
+. . .
+
+-   An overall control/coordination mechanism is employed
+
+```{mermaid}
+flowchart LR
+  A(Input . ) -->B[Task 1  .]
+  A --> C[task 2  .]
+  A --> D[...  .]
+  B --> E(Output  .)
+  C --> E(Output  .)
+  D --> E(Output  .)
+
+  style A  stroke:#333, stroke-width:2px , width:70px, height:30px , font-size:25px;
+  style B   stroke:#333, stroke-width:2px , width:70px, height:30px;
+  style C  stroke:#333, stroke-width:2px , width:70px, height:30px;
+  style D  stroke:#333, stroke-width:2px , width:70px, height:30px;
+  style E  stroke:#333, stroke-width:2px , width:70px, height:30px;
+```
+## Parallel Computing
+
+The computational problem should be able to:
+
+-   Be broken apart into discrete pieces of work that can be solved simultaneously;
+-   Execute multiple program instructions at any moment in time;
+-   Be solved in less time with multiple compute resources than with a single compute resource.
+
+. . .
+
+The compute resources are typically:
+
+-   A single computer with multiple processors/cores
+
+-   An arbitrary number of such computers connected by a network
+
+. . .
+
+Parallel computers:
+
+-   Virtually all stand-alone computers today are parallel from a hardware perspective (Multiple functional units, multiple execution units/cores, multiple hardware threads)
+-   Networks connect multiple stand-alone computers (nodes) to make larger parallel computer clusters
+
+## Parallel Computing
+
+::: {style="text-align: center"}
+![IBM BG/Q Compute Chip with 18 cores (PU) and 16 L2 Cache units (L2)](bgqComputeChip.jpg){fig-align="center"}
+:::
+
+## Parallel Computing
+
+::: {style="text-align: center"}
+![Intel Xeon processor with 6 cores and 6 L3 cache units](xeon5600processorDie3.jpg){fig-align="center"}
+:::
+
+## Parallel Computing
+
+::: {style="text-align: center"}
+![](nodesNetwork.png){fig-align="center"}
+:::
+
+## Parallel Computing
+
+But, why to parallelize computer programs?
+
+. . .
+
+-   Save time and/or money
+    -   Short time to completion of a task, with potential cost savings
+    -   Parallel computers can be built from cheap, commodity components
+
+. . .
+
+-   Solve larger and more complex problems
+    -   Many problems are so large and/or complex that it is impractical or impossible to solve them on a single computer (e.g., memory constraints)
+    -   Grand Challenge Problems
+
+. . .
+
+-   Provide concurrency
+    -   For instance, collaborative Networks provide a global venue where people from around the world can meet and conduct work "virtually"
+
+. . .
+
+-   Advantage of non-local resources
+
+. . .
+
+-   Use parallel hardware
+
+# Some Side Notes: GIScience Grand Challenges
+
+## GIScience Grand Challenges
+
+**GIScience Grand Challenges:** "Grand challenges are not merely routine research questions or research priorities but questions and directives that (1) are extremely hard to do, yet are doable; (2) produce outcomes potentially affecting millions, if not hundreds of millions of people; (3) require multiple research projects across many subdisciplines in order to be satisfactorily addressed; (4) consist of well-defined metrics such that, through creativity and commitment, can be realistically met and one knows the end has been reached; (5) capture the popular imagination, and thus political support." (Association of American Geographers)
+
+## GIScience Grand Challenges
+
+National Center for Geographic Information and Analysis **1989**:
+
+-   **Spatial analysis and spatial statistics**, the techniques used to model uncertainty in geospatial data, to mine data for patterns and anomalies, and to test theories by comparison with reality.
+
+-   **Spatial relationships and database structures**, addressing the representation of real geographic phenomena in digital form, and the interface between digital structures and human reasoning.
+
+-   **Artificial intelligence and expert systems**, reflecting Rhind's concern for the role of advanced machine intelligence in GIS operations.
+
+-   **Visualization**, and the need to advance traditional cartography to reflect the vastly greater potential of digital systems for display of geographic data.
+
+-   **Social, economic and institutional issues**, the host of social issues surrounding GIS.
+
+## GIScience Grand Challenges
+
+University Consortium for Geographic Information Science **1996**:
+
+-   **Geospatial data mining and knowledge discovery**, the development of methods for extracting patterns and knowledge from very large data sources.
+
+-   **Ontological foundations of geographic information science**, addressing the fundamental components on which our knowledge of the Earth's surface is based.
+
+-   **Geographic visualization.**
+
+-   **Remotely acquired data and information in GI Science.**
+
+## GIScience Grand Challenges
+
+U.S. National Research Council (NRC) **2010** report entitled "Understanding the Changing Planet: Strategic Directions for the Geographical Sciences:"
+
+. . .
+
+-   **How to understand and respond to environmental change:**
+
+    1.  How are we changing the physical environment of earth's surface?
+
+    2.  How can we best preserve biological diversity and protect endangered ecosystems?
+
+    3.  How are climate and other environmental changes affecting the vulnerabilities of coupled human-environment systems?
+
+. . .
+
+-   How to promote sustainability
+    4.  Where and how will 10 billion people live?
+    5.  How will we sustainably feed everyone in the coming decade and beyond?
+    6.  How does where we live affect our health?
+
+. . .
+
+-   How to recognize and cope with the rapid spatial reorganization of the economy and society
+    7.  How is the movement of people, goods, and ideas changing the world?
+    8.  How is economic globalization affecting inequality?
+    9.  How are geopolitical shifts influencing peace and stability?
+
+. . .
+
+-   How to leverage technological change for the benefit of society and environment
+    10. How might we better observe, analyze, and visualize a changing world?
+    11. What are the societal implications of citizen mapping and mapping citizens?
+
+# Parallel Computing
+
+## Flynn's Classical Taxonomy
+
+Flynn's Classical Taxonomy
+
+-   One of the widely used classifications
+-   Flynn's taxonomy distinguishes multi-processor computer architectures according to how they can be classified along the two independent dimensions of Instruction Stream and Data Stream
+-   Each of these dimensions can have only one of two possible states: Single or Multiple
+
+::: {style="text-align: center"}
+![](flynnsTaxonomy.png){fig-align="center"}
+:::
+
+## Flynn's Classical Taxonomy
+
+-   A serial (non-parallel) computer
+-   Single Instruction: Only one instruction stream is being acted on by the CPU during any one clock cycle
+-   Single Data: Only one data stream is being used as input during any one clock cycle
+-   Deterministic execution
+-   This is the oldest type of computer
+-   Examples: older generation mainframes, minicomputers, workstations and single processor/core PCs.
+
+## Flynn's Classical Taxonomy
+
+![](sisd2.png){.absolute top="200" left="200" width="350" height="300"} ![](sisd.png){.absolute top="200" left="550" width="350" height="300"}
+
+## Flynn's Classical Taxonomy
+
+Single Instruction, Multiple Data (SIMD):
+
+-   A type of parallel computer
+-   Single Instruction: All processing units execute the same instruction at any given clock cycle
+-   Multiple Data: Each processing unit can operate on a different data element
+-   Best suited for specialized problems characterized by a high degree of regularity, such as graphics/image processing.
+-   Synchronous (lockstep) and deterministic execution
+-   Most modern computers, particularly those with graphics processor units (GPUs) employ SIMD instructions and execution units.
+
+## Flynn's Classical Taxonomy
+
+![](simd3.png){.absolute top="100" left="200" width="350" height="300"} ![](simd.png){.absolute top="100" left="550" width="350" height="300"}
+
+## Flynn's Classical Taxonomy
+
+Multiple Instruction, Single Data (MISD):
+
+-   A type of parallel computer
+-   Multiple Instruction: Each processing unit operates on the data independently via separate instruction streams.
+-   Single Data: A single data stream is fed into multiple processing units.
+-   Few (if any) actual examples of this class of parallel computer have ever existed.
+-   Some conceivable uses might be: multiple frequency filters operating on a single signal stream, multiple cryptography algorithms attempting to crack a single coded message.
+
+## Flynn's Classical Taxonomy
+
+![](misd4.png){.absolute top="150" left="100" width="400" height="200"} ![](misd.png){.absolute top="150" left="500" width="423"}
+
+## Flynn's Classical Taxonomy
+
+Multiple Instruction, Multiple Data (MIMD):
+
+-   A type of parallel computer
+-   Multiple Instruction: Every processor may be executing a different instruction stream
+-   Multiple Data: Every processor may be working with a different data stream
+-   Execution can be synchronous or asynchronous, deterministic or non-deterministic
+-   Currently, the most common type of parallel computer - most modern supercomputers fall into this category.
+-   Examples: most current supercomputers, networked parallel computer clusters and "grids," multi-processor SMP computers, multi-core PCs.
+-   Note: many MIMD architectures also include SIMD execution sub-components
+
+## Flynn's Classical Taxonomy
+
+![](mimd2.png){.absolute top="150" left="100" height="300"} ![](mimd.png){.absolute top="150" left="400" width="536"}
+
+## Limits and Costs of Parallel Programming
+
+**Time:**
+
+-   **Observed speedup** of a code, which has been parallelized, is defined as $$ Speedup = \frac{wall-clock time of serial execution} {wall-clock time of parallel execution}$$
+-   One of the simplest and most widely used indicators for a parallel program's performance.
+-   **Amdahl's Law** states that maximum program speedup is defined by the fraction of code $(P)$ that can be parallelized $$Maximum speedup = \frac{1} {1-p} $$
+-   If none of the code can be parallelized, $P = 0$ and the speedup is one (no speedup)
+-   If all of the code is parallelized, $P = 1$ and the speedup is infinite (in theory)
+-   If $50%$ of the code can be parallelized, maximum speedup is equal to $2$.
+
+## Limits and Costs of Parallel Programming I
+
+-   Introducing the number of processors performing the parallel fraction of work, the (theoretical) speedup can be modeled by $$ Speedup = \frac{1} {P/N+S} = \frac{1} {1−P(1−1/N)}  $$ where $P$ and $S = 1 − P$ defined the parallel fraction and serial fraction, respectively. The number of processors is denoted by $N$.
+
+| N      | P=0.5 | P=0.9 | P=0.95 | P=0.99 |
+|--------|-------|-------|--------|--------|
+| 10     | 1.82  | 5.26  | 6.89   | 9.17   |
+| 100    | 1.98  | 9.17  | 16.80  | 50.25  |
+| 1000   | 1.99  | 9.91  | 19.62  | 90.99  |
+| 10000  | 1.99  | 9.91  | 19.96  | 99.02  |
+| 100000 | 1.99  | 9.99  | 19.99  | 99.90  |
+
+## Limits and Costs of Parallel Programming II
+
+-   However, certain problems demonstrate increased performance by increasing the problem size
+-   For example, problems on more-dimensional unit grids (e.g. images, movies)
+-   Problems that increase the percentage of parallel time with their size are more scalable than problems with a fixed percentage of parallel time
+
+**Complexity:**
+
+-   In general, parallel applications are much more complex than corresponding serial applications, perhaps an order of magnitude. Not only do you have multiple instruction streams executing at the same time, but you also have data flowing between them.
+-   The costs of complexity are measured in programmer time in virtually every aspect of the software development cycle:
+    -   Design, Coding, Debugging, Tuning, Maintenance
+
+## Limits and Costs of Parallel Programming III
+
+-   Adhering to "good" software development practices is essential, when working with parallel applications - especially if somebody besides you will have to work with the software
+
+**Portability:**
+
+-   All of the usual portability issues associated with serial programs apply to parallel programs
+-   Hardware architectures are characteristically highly variable and can affect portability
+
+**Resource Requirements:**
+
+-   The primary intent of parallel programming is to decrease execution wall clock time, however in order to accomplish this, more CPU time is required. For example, a parallel code that runs in 1 hour on 8 processors actually uses 8 hours of CPU time.
+
+## Limits and Costs of Parallel Programming IV
+
+-   The amount of memory required can be greater for parallel codes than serial codes, due to the need to replicate data and for overheads associated with parallel support libraries and subsystems.
+-   For short running parallel programs, there can actually be a decrease in performance compared to a similar serial implementation. The overhead costs associated with setting up the parallel environment, task creation, communications and task termination can comprise a significant portion of the total execution time for short runs.
+
+## Limits and Costs of Parallel Programming V
+
+**Scalability:**
+
+-   Strong scaling :
+    -   The total problem size stays fixed as more processors are added.
+    -   Goal is to run the same problem size faster
+    -   Perfect scaling means problem is solved in $1/N$ time (compared to serial)
+-   Weak scaling :
+    -   The problem size per processor stays fixed as more processors are added. The total problem size is proportional to the number of processors used.
+
+    -   Goal is to run larger problem in same amount of time
+
+    -   Perfect scaling means problem $Px$ runs in same time as single processor run
+
+# Example
+
+## Spatial and Temporal Dimensions
+
+::: callout-tip
+## Example: Mortality rates and particulate matter concentration
+
+Mortality rates in all U.S. counties should be explained by several environmental, behavioral and economic factors.
+
+-   5-year age-adjusted mortality rates ${Y(s):s∈{s_1,...,s_n}}$
+-   Environmental factors are measured at ground stations ${X(s) : s ∈ R2}$, e.g., particulate matter concentration, carbon oxides, ozone etc.
+:::
+
+## Example: particulate matter concentration $PM_{2.5}$
+
+![](PM25.png){.absolute top="150" left="100"} ![](regions.png){.absolute top="100" left="500"}
+
+## Spatial interpolation
+
+![](kriging.png){.absolute top="150" left="700"}
+
+. . .
+
+-   $10^6 × 10^6$ grid
+
+. . .
+
+-   Estimation of the spatial covariance and covariogram
+
+. . .
+
+-   Spatial interpolation, kriging
+
+. . .
+
+-   Observations are predicted for all grid cells based on the spatial <br> covariogram (or covariance matrix)
+
+. . .
+
+-   Average of all predictions in several grid cells lying in one county
+
+. . .
+
+-   For instance, Map-Reduce Hadoop
+
+## 
+
+![](graph1.png){fig-align="center"}
+
+::: columns
+::: {.column width="50%"}
+Map function:
+
+-   Input: pair of values (coordinates of the grid cell, predicted observation)
+
+-   To which county belongs the respective grid cell (coordinates)?
+
+-   Output: pair of values (county, predicted observation)
+:::
+
+::: {.column width="50%"}
+Reduce function:
+
+-   Input: pair of values (county, predicted observation)
+
+-   Compute average of all predicted values within one county
+
+-   Output: pair of values (county, average predicted observation)
+:::
+:::
+
+## 
+
+::: {style="text-align: center"}
+![Figure: Annual average PM2.5 concentrations in 2012 per county.](PM25.png){fig-align="center"}
+:::
+
+## Open Questions
+
+-   Construction of Map and Reduce functions
+-   "Optimal" number of nodes/cores and Map and Reduce calls
+-   Importance of Shuffling and Combine phase
+-   Virtual clusters (Amazon Elastic MapReduce), physical clusters

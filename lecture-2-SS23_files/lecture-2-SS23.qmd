@@ -1,0 +1,487 @@
+---
+title: "Big Geospatial Data"
+
+author: " Prof.Dr. Philip otto <br>Leibniz Universtity Hannover, Germany<br>April 21, 2023"
+format: 
+   revealjs:
+     slide-number: c/t
+     transition: convex
+     theme: solarized
+     font-family: "Gill Sans"
+     footer: "otto@ikg.uni-hannover.de"
+     scrollable: true
+     chalk-width : 10
+editor: visual
+---
+
+## 
+
+::: columns
+::: {.column width="50%"}
+[**Big Data**]{style="color:#cc0000"}
+
+-   What do actually make data 'big' ?
+
+-   Definitions?
+
+-   Small data ?
+
+-   Complex data, high-dimensional data , high-frequency data, ...
+:::
+
+::: {.column width="50%"}
+[**Geospatial Data**]{style="color:#cc0000"}
+
+-   Properties of spatial data
+
+-   Difference between 'data' and '(geo-)spatial data'?
+
+-   Information obtained from georeferencing?
+:::
+:::
+
+::: {.absolute top="500" left="20%"}
+-   Basics for analyzing data - statistical modelling and testing
+-   Spatial statistics
+-   Computational complexity, tools to handle 'big data'
+:::
+
+::: {.absolute top="300" left="42%" style="color : red"}
+## Big data
+:::
+
+## What is Big Data? {.smaller}
+
+Specific attributes that define Big Data - The Three/Four V's of Big Data:
+
+-   [**Volume**]{style="color:#cc0000"} :
+
+    Total amount of the information is growing exponentially every year
+
+-   [**Variety**]{style="color:#cc0000"} : <br>Different forms of data: text, images, audio, video
+
+-   [**Velocity**]{style="color:#cc0000"} : <br>Analysis of streaming data
+
+-   [**Veracity**]{style="color:#cc0000"} : <br> Uncertainty on data: inaccurate data, lot of variation etc.
+
+-   [**+ 2 further V's**]{style="color:#cc0000"} :
+
+    -   Value
+    -   Validity
+
+-   [**+ 4 further V's**]{style="color:#cc0000"} :
+
+    -   Variability, Venue, Vocabulary, Vagueness
+
+-   [**Fox 2018: "Big Data is where parallel computing tools are needed to handle data"'**]{style="color:#213E12"}
+
+-   [**2011 McKinsey Global Institute: Machine Learning, Cloud-Computing, Visualizations**]{style="color:#213E12"}
+
+## Technical development {.smaller}
+
+|                   |                               | [1986]{style="color:#213E12"} | [1993]{style="color:#213E12"} | [2000]{style="color:#213E12"} | [2007]{style="color:#213E12"} |
+|:----------:|:----------:|:----------:|:----------:|------------|:----------:|
+|      Storage      |   MB per capita <br>digital   |         539 <br>0,8%          |         2.866 <br>3%          | 8.988 <br>25%                 |        44.716 <br>94%         |
+|     Broadcast     | MB per capita and day digital |         241 <br>0,0%          |         356 <br>0,0%          | 520 <br>7,3%                  |          784 <br>25%          |
+| Telecommunication | MB per capita and day digital |        0,16 <br>19,8%         |        0,23 <br>68,5%         | 1,01 <br> 97,7%               |         27 <br>99.9%          |
+|  PC (households)  |        MIPS per capita        |             0,06              |              0,8              | 48                            |              968              |
+|   PC (high-end)   |        MIPS per capita        |             0,09              |              3,3              | 239                           |            28.620             |
+
+: [Development of the storage and transmission of data (Hilbert, Lopez 2011, The World's Technological Capacity to Store, Communicate, and Compute Information)]{style="color:##1D4F6B"}
+
+## What is Big Data? {.smaller}
+
+[**Volume :**]{style="color:#cc0000"}
+
+-   If the volume is getting larger than a single computing unit can handle, the data needs to get split into chunks that are small enough to be handled.
+-   When processing data with high volume on a set of computers, the communication of data is a typical bottleneck (related to the Velocity)
+-   Algorithms must be designed to work on partial data, allowing for aggregating results.
+-   Active communication between different computers processing different chunks can become mandatory.
+
+## What is Big Data? {.smaller}
+
+[**Velocity:**]{style="color:#cc0000"}
+
+-   In order to handle the speed, data is going to be fed into various nodes
+-   A consistent view of the incoming and existing data is impossible to generate in real time
+-   Nodes need to communicate with each other in an application-dependent manner
+-   It is often impossible to store the incoming data; hence, a careful design of what to hold and what to forget is important
+
+## What is Big Data? {.smaller}
+
+[**Variety:**]{style="color:#cc0000"}
+
+-   Data processing usually requires certain formats, data quality, meaning, ...
+-   General preprocessing of data is impossible (Velocity) or ineffective (Volume)
+-   Application-dependent preprocessing must be defined and implemented
+
+## What is Big Data? {.smaller}
+
+[**Veracity:**]{style="color:#cc0000"}
+
+-   Uncertainty due to data inconsistency and/or incompleteness
+-   Incomplete data might be imputed, but this might cause errors (model approximations)
+-   Generally, models must be less complex than the real world ("All models are wrong, but some are useful" George Box)
+-   Latent factors
+
+## What is Big Data? {.smaller}
+
+Alternative definition (similar useful like the previous definitions):
+
+<br> <br> <br>
+
+::: {.absolute top="300" left="35%"}
+[**Big data is like teenage sex**]{style="color:#cc0000"}
+:::
+
+::: {.absolute top="300" left="15%"}
+<br> <br> everyone talks about it, nobody really knows how to do it, everyone thinks everyone else is doing it, so everyone claims they are doing it ...
+:::
+
+## From a viewpoint of a statistician {.smaller}
+
+-   Characteristic, random variable/vector [*X = (X1, X2, . . . , Xp)*]{style="color:#cc0000"}
+    -   example: income X1 in Euro, age X2 in years, height X3 in cm, . . . , monthly grocery shopping Xp in Euro
+-   Observations [*x = X(ω)*]{style="color:#cc0000"}
+    -   example: above mentioned characteristics of one specific person, x = (1000, 20, 165, . . . , 30)′
+-   Statistical sample [*x1, . . . , xn*]{style="color:#cc0000"} of size n
+    -   example: above mentioned characteristics of n different persons
+    -   classical problems: how large must be the sample (n?), representative sample, distribution of **X**, ...?
+-   p constant, p \< n: classical statistics
+-   p constant, p \< n, n → ∞: classical statistics (asymptotic statistics)
+-   p, n very large: computation can get complicated (time consuming, RAM intensive, ...)
+-   p → ∞, n → ∞, but p/n → c: high-dimensional statistics (z.B. genome sequences, financial portfolios)
+
+::: {style="text-align: center"}
+## Examples of Big Data
+:::
+
+## Data in higher-dimensional spaces
+
+::: {style="text-align: center"}
+![Figure: Rendered CT scan in the three-dimensional space](Lung_3D_large_red-eps-converted-to1024_1.png){width="500"}
+:::
+
+## Examples of functional data {.smaller}
+
+-   Cancer risk at various ages in European countries
+
+-   Average daily temperature and precipitation records in weather stations across Germany
+
+-   Records of number of eggs laid by Mediterranean Fruit Fly (Ceratitis capitata) in each day of the month etc.
+
+-   Child height of 100 children as a function of their age
+
+::: {style="text-align: center"}
+![Figure: Height of 20 children as a function of their age](images/HeightAge.png){width="200"}
+:::
+
+## High-frequency data {.smaller}
+
+[**High-frequency data**]{style="color:#cc0000"} are observations on variables taken daily or at a finer time scale, and are often irregularly spaced over time. <br>
+
+As a result of advanced computational power in recent decades, high frequency data can be accurately collected at an efficient rate for analysis. <br>
+
+Possible issues when dealing with high-frequency data:
+
+-   Irregular time intervals between observations
+-   Market microstructure noise
+-   Non-normal asset return distributions (e.g. fat tail distributions)
+-   Volatility clustering and long memory in absolute values of returns
+-   High computational loads and related "Big data" problems
+
+## Examples of high-frequency data {.smaller}
+
+-   Trade and quote data (databases of NYSE, AMEX, NASDAQ etc.)
+-   Fixed level order book data
+-   Messages on all limit order activities
+-   Data on order book snapshots
+
+## High-dimensional data {.smaller}
+
+[**High-dimensional data**]{style="color:#cc0000"} are observations of a multivariate process [(p variables/features)]{style="color:#213E12"}, where [p]{style="color:#213E12"} and the number of observations [n]{style="color:#213E12"} approaches infinity, but [p/n]{style="color:#213E12"} approaches [a]{style="color:#213E12"} certain, positive constant [c]{style="color:#213E12"}. <br>
+
+Many classical statistical limit theorems do not hold any more for high-dimensional data. Moreover, dealing with high-dimensional data probably gets computationally complex. <br> Possible issues when dealing with high-dimensional data:
+
+-   Statistical inference might not be feasible in the classical way (corrections may be required)
+-   Classical models could be too complex
+-   High computational loads and related "Big data" problems
+-   Gene expressions (micro arrays)
+-   High-resolution images
+-   Movie, music (ratings)
+
+## High-dimensional data
+
+::: {style="text-align: center"}
+![Figure: Genome sequence (Venter et al. 2001, The Sequence of the Human Genome)](363c234a_1.png){fig-align="center" width="500"}
+:::
+
+::: {style="text-align: center"}
+## Geospatial Data
+:::
+
+## Spatial stochastic processes {.smaller}
+
+Stochastic processes are (random) observations drawn from data-generating process, which have a certain order in a predefined space, e.g.
+
+-   time series (daily returns of a financial asset, acceleration of a car (each second, millisecond, etc.), ...)
+-   spatial processes (today's (maximum) wind speed at different locations, particulate matter distribution in the atmosphere, ...)
+-   spatiotemporal processes (concentration of air pollutants at several locations observed over time, satellite measurements of CO2, ...)
+
+<br> Classical statistical methods, like ordinary-least squares estimators of linear/nonlinear regression models, typically require independent data. Meaning, observations should not depend on other observations. But, ...
+
+## Theoretical framework {.smaller}
+
+Let $s ∈ R^d$ be a location in the d-dimensional space. This covers
+
+-   temporal domains (d = 1)
+-   spatial domains (d \> 1)
+-   spatiotemporal domains (d \> 2, where 1 dimension represents time)
+
+However, we typically observe data only in a finite space $D ⊂ R^d$. Here, we consider that D is fixed (non random). <br>
+
+Further, let Z(s) be (univariate) random variable (datum) at location s, i.e., Z(s) ∈ R. Note that one might also consider multivariate variables $Z = (Z_1, . . . , Z_p)′$. Now, a spatial stochastic process is defined as : $${Z(s) : s ∈ D}.$$ <br> Moreover, denote the observed process by $${z(s) : s ∈ D} .$$
+
+## Theoretical framework {.smaller}
+
+::: callout-tip
+## Example
+
+Lead concentration at several location along the river Meuse
+:::
+
+::: callout-tip
+## Lead concentration
+
+Spatial locations $s_1, . . . , s_5$ with $s_i = (s_{i,x}, s_{i,y})′$
+
+| $i$ | $s_{i,x}$ | $s_{i,y}$ |
+|:---:|:---------:|:---------:|
+|  1  |  181072   |  333611   |
+|  2  |  181025   |  333558   |
+|  3  |  181165   |  333537   |
+|  4  |  181298   |  333484   |
+|  5  |  181307   |  333330   |
+:::
+
+## Theoretical framework
+
+::: callout-tip
+## Lead concentration
+
+Observed spatial process ${z(s) : s ∈ D}$, where $D = {s_1, . . . , s_5}$
+
+| $i$ |            $s_{i,x}$            |            $s_{i,y}$            | $z(s_i)$ |
+|:----------------:|:----------------:|:----------------:|:----------------:|
+|  1  | [181072]{style="color:#999999"} | [333611]{style="color:#999999"} |   299    |
+|  2  | [181025]{style="color:#999999"} | [333558]{style="color:#999999"} |   277    |
+|  3  | [181165]{style="color:#999999"} | [333537]{style="color:#999999"} |   199    |
+|  4  | [181298]{style="color:#999999"} | [333484]{style="color:#999999"} |   116    |
+|  5  | [181307]{style="color:#999999"} | [333330]{style="color:#999999"} |   117    |
+
+: Demonstration of pipe table syntax
+:::
+
+------------------------------------------------------------------------
+
+## Theoretical framework {.smaller}
+
+::: callout-tip
+## Lead concentration
+
+Plotting the observations according to their location in the Euclidean space, the spatial "order" gets apparent.
+
+![](89eccef1_1.png){fig-align="center" width="350"}
+:::
+
+::: {style="text-align: center"}
+## Some properties of spatial processes (assumptions)
+:::
+
+## Spatial dependence {.smaller}
+
+Observations are likely to be influenced by observations in the close neighborhood. That means we typically observe similar patterns for observations, which are close in space. This influence usually weakens with increasing distance between the observations.
+
+::: callout-tip
+## Spatial stochastic process
+
+The random process ${Z(s)}$ can be defined by a distribution $F_{Z_(s_1),...,Z_(s_n)}$. $$F_{Z_(s_1),...,Z_(s_n)}(z_1, . . . , z_n) = P (Z_{(s_1)} ≤ z_1, . . . , Z_{(s_n)} ≤ z_n)$$
+
+P is called probability measure.
+:::
+
+There are certain measures describing characteristics/properties of a distribution function $F$, like the expectation of $F$, (co-)variance of $F$, etc. These measures also define the spatial dependence.
+
+##  {.smaller}
+
+::: callout-tip
+## First-order stationarity If the expectation
+
+::: {style="text-align: center"}
+$E(Z(s_i)) = \mu$ for all $i$
+:::
+
+the process is called first-order stationary. That is, the mean does not depend on the location.
+:::
+
+::: callout-tip
+## Spatial dependence
+
+Spatial dependence is characterized by $$Cov(Z(si),Z(sj)) $$ for $i \neq j$. We often need to assume additionally that $$Cov(Z(si),Z(sj))=C(si −sj),$$ that is, the covariance is a function of the difference between $s_i$ and $s_j$.
+:::
+
+##  {.smaller}
+
+::: callout-tip
+## Stationarity
+
+If these two assumptions are fulfilled, the process is called weakly stationary.
+:::
+
+This means that the distribution of the random process is the same in all locations and the dependence between the random variables does also not depend on the location, but only on the difference between two locations. In the special case that the dependence is the same into all directions (depending only on the distance between two locations, but not the orientation towards each other), the process is isotropic.
+
+::: callout-tip
+## Isotropy
+
+If there is a norm $|| · ||$, such that $C(·)$ is only a function of $||si − sj||$, the process (or rather $C(·)$) is called **isotropic**.
+:::
+
+One might also assume that $F_{Z(s)}(z) = P(Z(s) < z)$ for all $i$, then the distribution of ${Z(s)}$ is called to be invariant.
+
+## Estimation from observed processes {.smaller}
+
+But, how to see if the underlying distribution of an observed process is (weakly stationary or isotropic?
+
+![](89eccef1_1.png){fig-align="center" width="350"}
+
+## Estimation of $C(·)$ {.smaller}
+
+Looking at $$Var(Z(s_i)−Z(s_j)) = Var(Z(s_i))+Var(Z(s_j))−2Cov(Z(s_i),Z(s_j)),$$ we see that there is a relation between $C(s_i − s_j)$ and $Var(Z(s_i) − Z(s_j))$ Suppose additionally that
+
+::: {style="text-align: center"}
+$Var(Z(s_i)−Z(s_j))=2γ(s_i−s_j)$ for all $i \neq j$ , and $s_i, s_j ∈D$.
+:::
+
+The function $γ$ is called semivariogram (as $2γ$ is called variogram).
+
+::: callout-tip
+## 
+
+Obviously, $γ(h) = γ(−h)$ and $γ(0) = 0$, but $γ(h)$ approaches a certain constant $c0$ as h goes to zero. This constant is the so-called nugget effect.
+:::
+
+## Estimation of $C(·)$ {.smaller}
+
+For modelling spatial dependence, often certain parametric models are estimated for $γ$.
+
+::: callout-tip
+## Example of an variogram model
+
+![Source: SAS support,online](lecture-2-SS23_files/mportant-characteristics-of-a-semivariogram-The-nugget-sill-and-range-are-commonly.png){fig-align="center" width="420"}
+:::
+
+## Estimation of $C(·)$ {.smaller}
+
+::: callout-tip
+## Variogram models
+
+![Hartkamp, A. D., De Beurs, K., Stein, A., & White, J. W. (1999). Interpolation techniques for climate variables](lecture-2-SS23_files/Checkliste.jpeg){fig-align="center"}
+:::
+
+## Estimation of C(·) {.smaller}
+
+But, let us come back to the estimation of $C(·)$. In general, we denote the estimator of $a$ parameter $a$ by $aˆ$. <br>Common estimation methods are, for instance,
+
+-   Least-Squares estimators
+-   Maximum-Likelihood estimators
+-   Bayesian estimators
+-   Method-of-Moments estimators
+-   ...
+
+To find a method-of-moments estimator, we simply use sample estimates (sample mean (average), sample variance, ...) to estimate the moments of a certain model. If these moments depend on the parameters to be estimated, we get a system of equations, which can be solved with respect to the parameters.
+
+## Estimation of $C(·)$ {.smaller}
+
+::: callout-tip
+## Method-of-Moments estimator for $γ$ (Matheron 1962)
+
+An estimator of $γ$ is given by $$2\hatγ(h) = \frac{1}{|\Xi(h)|} \sum_{\Xi(h)}(z(s_i) − z(s_j))^2$$ where $\Xi(h)$ is the set of all observations, where $s_i − s_j = h$, i.e., $$\Xi(h)=\{(s_i,s_j):s_i−s_j =h;i,j=1,...,n\}.$$
+:::
+
+## Estimation of $C(·)$ {.smaller}
+
+::: callout-tip
+## Example: lead concentration
+
+Observed spatial process $\{z(s) : s ∈ D\}$, where $D = \{s_1, . . . , s_5\}$
+
+| $i$ | $s_{i,x}$ | $s_{i,y}$ | $z(s_i)$ |
+|:---:|:---------:|:---------:|:--------:|
+|  1  |  181072   |  333611   |   299    |
+|  2  |  181025   |  333558   |   277    |
+|  3  |  181165   |  333537   |   199    |
+|  4  |  181298   |  333484   |   116    |
+|  5  |  181307   |  333330   |   117    |
+:::
+
+## Estimation of $C(·)$ {.smaller}
+
+::: callout-tip
+## Example: lead concentration
+
+Differences $h = s_i − s_j$
+
+| $i/j$ |      1      |      2      |      3       |      4      |      5      |
+|-------|:-----------:|:-----------:|:------------:|:-----------:|:-----------:|
+| 1     |   ( 0, 0)   |  ( 47, 53)  |  ( -93, 74)  | (-226, 127) | (-235, 281) |
+| 2\.   | (-47, -53)  |   ( 0, 0)   |  (-140, 21)  | (-273, 74)  | (-282, 228) |
+| 3     |  93, -74)   | (140, -21)  |   ( 0, 0)    | (-133, 53)  | (-142, 207) |
+| 4     | (226, -127) | (273, -74)  | ( 133, -53)  |   ( 0, 0)   | ( -9, 154)  |
+| 5     | (235, -281) | (282, -228) | ( 142, -207) | ( 9, -154)  |   ( 0, 0)   |
+
+**Problem**: we do not have even one pair of equal differences ! because distance between points is irregular, data are not "evenly" distributed across space)
+:::
+
+## Estimation of $C(·)$ {.smaller}
+
+For data, which is not regularly spaced in $R^d$ , we must alter the definition of $Ξ(h)$ , e.g. as follows $$Ξ(h)=\{(s_i,s_j):h−l<s_i−s_j ≤h+l;i,j=1,...,n\}.$$
+
+Meaning, we allow for a certain tolerance $l$. However, this also implies that the estimated variogram is "somehow" smoothed.
+
+::: callout-tip
+## Estimation of $C(·)$
+
+To estimate the covariogram $C(·)$, we can follow the same approach, i.e., $$\hat{C}(h) = \frac{1}{|\Xi(h)|} \sum_{\Xi(h)}(z(s_i) − \bar{z})(z(s_j) - \bar{z} )$$
+
+where $\bar{z}$ is the sample mean (average).
+:::
+
+## Example {.smaller}
+
+Consider $C(·)$ as function of $||h||$ instead of h. That is, we now estimate the variogram based on distances between observations. In this case, $Ξ(||h||)$ is a set of all locations with equal distance $||h||$. Note that one can also introduce a certain tolerance if dealing with irregularly spaced data.
+
+::: callout-tip
+## Example: lead concentration
+
+Distances $||h||_2$
+
+| $i/j$ |   1    |   2    |   3    |   4    |   5    |
+|-------|:------:|:------:|:------:|:------:|:------:|
+| 1     |   0    | 70.84  | 118.85 | 259.24 | 366.31 |
+| 2     | 70.84  |   0    | 141.57 | 282.85 | 362.64 |
+| 3     | 118.85 | 141.57 |   0    | 143.17 | 251.02 |
+| 4     | 259.24 | 282.85 | 143.17 |   0    | 154.26 |
+| 5     | 366.31 | 362.64 | 251.02 | 154.26 |   0    |
+:::
+
+## Example
+
+::: callout-tip
+## Example: lead concentration $\hat{γ}$
+
+![](lecture-2-SS23_files/unnamed-chunk-23-1.png){fig-align="center" width="400"}
+:::
+
+
+
+

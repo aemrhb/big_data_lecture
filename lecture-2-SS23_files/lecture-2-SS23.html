@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="lecture-2-SS23_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lecture-2-SS23_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lecture-2-SS23_files/libs/quarto-html/popper.min.js"></script>
+<script src="lecture-2-SS23_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lecture-2-SS23_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lecture-2-SS23_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="lecture-2-SS23_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.2.335">
+
+  <meta name="author" content="Prof.Dr. Philip otto  Leibniz Universtity Hannover, Germany April 21, 2023">
+  <title>Big Geospatial Data</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="lecture-2-SS23_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lecture-2-SS23_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="lecture-2-SS23_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="lecture-2-SS23_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lecture-2-SS23_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lecture-2-SS23_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lecture-2-SS23_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-captioned.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-captioned) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-captioned .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-captioned .callout-caption  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-captioned.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-captioned.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-caption {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-caption {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-caption {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-captioned .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-captioned) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-caption {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-caption {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-caption {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-caption {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-caption {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Big Geospatial Data</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Prof.Dr. Philip otto <br>Leibniz Universtity Hannover, Germany<br>April 21, 2023 
+</div>
+</div>
+</div>
+
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span style="color:#cc0000"><strong>Big Data</strong></span></p>
+<ul>
+<li><p>What do actually make data ‘big’ ?</p></li>
+<li><p>Definitions?</p></li>
+<li><p>Small data ?</p></li>
+<li><p>Complex data, high-dimensional data , high-frequency data, …</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><span style="color:#cc0000"><strong>Geospatial Data</strong></span></p>
+<ul>
+<li><p>Properties of spatial data</p></li>
+<li><p>Difference between ‘data’ and ‘(geo-)spatial data’?</p></li>
+<li><p>Information obtained from georeferencing?</p></li>
+</ul>
+</div>
+</div>
+<div class="absolute" style="top: 500px; left: 20%; ">
+<ul>
+<li>Basics for analyzing data - statistical modelling and testing</li>
+<li>Spatial statistics</li>
+<li>Computational complexity, tools to handle ‘big data’</li>
+</ul>
+</div>
+</section>
+<section id="big-data" class="slide level2 absolute" style="color : redtop: 300px; left: 42%; ">
+<h2>Big data</h2>
+</section>
+<section id="what-is-big-data" class="slide level2 smaller">
+<h2>What is Big Data?</h2>
+<p>Specific attributes that define Big Data - The Three/Four V’s of Big Data:</p>
+<ul>
+<li><p><span style="color:#cc0000"><strong>Volume</strong></span> :</p>
+<p>Total amount of the information is growing exponentially every year</p></li>
+<li><p><span style="color:#cc0000"><strong>Variety</strong></span> : <br>Different forms of data: text, images, audio, video</p></li>
+<li><p><span style="color:#cc0000"><strong>Velocity</strong></span> : <br>Analysis of streaming data</p></li>
+<li><p><span style="color:#cc0000"><strong>Veracity</strong></span> : <br> Uncertainty on data: inaccurate data, lot of variation etc.</p></li>
+<li><p><span style="color:#cc0000"><strong>+ 2 further V’s</strong></span> :</p>
+<ul>
+<li>Value</li>
+<li>Validity</li>
+</ul></li>
+<li><p><span style="color:#cc0000"><strong>+ 4 further V’s</strong></span> :</p>
+<ul>
+<li>Variability, Venue, Vocabulary, Vagueness</li>
+</ul></li>
+<li><p><span style="color:#213E12"><strong>Fox 2018: “Big Data is where parallel computing tools are needed to handle data”’</strong></span></p></li>
+<li><p><span style="color:#213E12"><strong>2011 McKinsey Global Institute: Machine Learning, Cloud-Computing, Visualizations</strong></span></p></li>
+</ul>
+</section>
+<section id="technical-development" class="slide level2 smaller">
+<h2>Technical development</h2>
+<table style="width:100%;">
+<caption><span style="color:##1D4F6B">Development of the storage and transmission of data (Hilbert, Lopez 2011, The World’s Technological Capacity to Store, Communicate, and Compute Information)</span></caption>
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><span style="color:#213E12">1986</span></th>
+<th style="text-align: center;"><span style="color:#213E12">1993</span></th>
+<th><span style="color:#213E12">2000</span></th>
+<th style="text-align: center;"><span style="color:#213E12">2007</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Storage</td>
+<td style="text-align: center;">MB per capita <br>digital</td>
+<td style="text-align: center;">539 <br>0,8%</td>
+<td style="text-align: center;">2.866 <br>3%</td>
+<td>8.988 <br>25%</td>
+<td style="text-align: center;">44.716 <br>94%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Broadcast</td>
+<td style="text-align: center;">MB per capita and day digital</td>
+<td style="text-align: center;">241 <br>0,0%</td>
+<td style="text-align: center;">356 <br>0,0%</td>
+<td>520 <br>7,3%</td>
+<td style="text-align: center;">784 <br>25%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Telecommunication</td>
+<td style="text-align: center;">MB per capita and day digital</td>
+<td style="text-align: center;">0,16 <br>19,8%</td>
+<td style="text-align: center;">0,23 <br>68,5%</td>
+<td>1,01 <br> 97,7%</td>
+<td style="text-align: center;">27 <br>99.9%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">PC (households)</td>
+<td style="text-align: center;">MIPS per capita</td>
+<td style="text-align: center;">0,06</td>
+<td style="text-align: center;">0,8</td>
+<td>48</td>
+<td style="text-align: center;">968</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">PC (high-end)</td>
+<td style="text-align: center;">MIPS per capita</td>
+<td style="text-align: center;">0,09</td>
+<td style="text-align: center;">3,3</td>
+<td>239</td>
+<td style="text-align: center;">28.620</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-is-big-data-1" class="slide level2 smaller">
+<h2>What is Big Data?</h2>
+<p><span style="color:#cc0000"><strong>Volume :</strong></span></p>
+<ul>
+<li>If the volume is getting larger than a single computing unit can handle, the data needs to get split into chunks that are small enough to be handled.</li>
+<li>When processing data with high volume on a set of computers, the communication of data is a typical bottleneck (related to the Velocity)</li>
+<li>Algorithms must be designed to work on partial data, allowing for aggregating results.</li>
+<li>Active communication between different computers processing different chunks can become mandatory.</li>
+</ul>
+</section>
+<section id="what-is-big-data-2" class="slide level2 smaller">
+<h2>What is Big Data?</h2>
+<p><span style="color:#cc0000"><strong>Velocity:</strong></span></p>
+<ul>
+<li>In order to handle the speed, data is going to be fed into various nodes</li>
+<li>A consistent view of the incoming and existing data is impossible to generate in real time</li>
+<li>Nodes need to communicate with each other in an application-dependent manner</li>
+<li>It is often impossible to store the incoming data; hence, a careful design of what to hold and what to forget is important</li>
+</ul>
+</section>
+<section id="what-is-big-data-3" class="slide level2 smaller">
+<h2>What is Big Data?</h2>
+<p><span style="color:#cc0000"><strong>Variety:</strong></span></p>
+<ul>
+<li>Data processing usually requires certain formats, data quality, meaning, …</li>
+<li>General preprocessing of data is impossible (Velocity) or ineffective (Volume)</li>
+<li>Application-dependent preprocessing must be defined and implemented</li>
+</ul>
+</section>
+<section id="what-is-big-data-4" class="slide level2 smaller">
+<h2>What is Big Data?</h2>
+<p><span style="color:#cc0000"><strong>Veracity:</strong></span></p>
+<ul>
+<li>Uncertainty due to data inconsistency and/or incompleteness</li>
+<li>Incomplete data might be imputed, but this might cause errors (model approximations)</li>
+<li>Generally, models must be less complex than the real world (“All models are wrong, but some are useful” George Box)</li>
+<li>Latent factors</li>
+</ul>
+</section>
+<section id="what-is-big-data-5" class="slide level2 smaller">
+<h2>What is Big Data?</h2>
+<p>Alternative definition (similar useful like the previous definitions):</p>
+<p><br> <br> <br></p>
+<div class="absolute" style="top: 300px; left: 35%; ">
+<p><span style="color:#cc0000"><strong>Big data is like teenage sex</strong></span></p>
+</div>
+<div class="absolute" style="top: 300px; left: 15%; ">
+<p><br> <br> everyone talks about it, nobody really knows how to do it, everyone thinks everyone else is doing it, so everyone claims they are doing it …</p>
+</div>
+</section>
+<section id="from-a-viewpoint-of-a-statistician" class="slide level2 smaller">
+<h2>From a viewpoint of a statistician</h2>
+<ul>
+<li>Characteristic, random variable/vector <span style="color:#cc0000"><em>X = (X1, X2, . . . , Xp)</em></span>
+<ul>
+<li>example: income X1 in Euro, age X2 in years, height X3 in cm, . . . , monthly grocery shopping Xp in Euro</li>
+</ul></li>
+<li>Observations <span style="color:#cc0000"><em>x = X(ω)</em></span>
+<ul>
+<li>example: above mentioned characteristics of one specific person, x = (1000, 20, 165, . . . , 30)′</li>
+</ul></li>
+<li>Statistical sample <span style="color:#cc0000"><em>x1, . . . , xn</em></span> of size n
+<ul>
+<li>example: above mentioned characteristics of n different persons</li>
+<li>classical problems: how large must be the sample (n?), representative sample, distribution of <strong>X</strong>, …?</li>
+</ul></li>
+<li>p constant, p &lt; n: classical statistics</li>
+<li>p constant, p &lt; n, n → ∞: classical statistics (asymptotic statistics)</li>
+<li>p, n very large: computation can get complicated (time consuming, RAM intensive, …)</li>
+<li>p → ∞, n → ∞, but p/n → c: high-dimensional statistics (z.B. genome sequences, financial portfolios)</li>
+</ul>
+</section>
+<section id="examples-of-big-data" class="slide level2" style="text-align: center">
+<h2>Examples of Big Data</h2>
+</section>
+<section id="data-in-higher-dimensional-spaces" class="slide level2">
+<h2>Data in higher-dimensional spaces</h2>
+<div style="text-align: center">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Lung_3D_large_red-eps-converted-to1024_1.png" width="500"></p>
+<p></p><figcaption>Figure: Rendered CT scan in the three-dimensional space</figcaption><p></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="examples-of-functional-data" class="slide level2 smaller">
+<h2>Examples of functional data</h2>
+<ul>
+<li><p>Cancer risk at various ages in European countries</p></li>
+<li><p>Average daily temperature and precipitation records in weather stations across Germany</p></li>
+<li><p>Records of number of eggs laid by Mediterranean Fruit Fly (Ceratitis capitata) in each day of the month etc.</p></li>
+<li><p>Child height of 100 children as a function of their age</p></li>
+</ul>
+<div style="text-align: center">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/HeightAge.png" width="200"></p>
+<p></p><figcaption>Figure: Height of 20 children as a function of their age</figcaption><p></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="high-frequency-data" class="slide level2 smaller">
+<h2>High-frequency data</h2>
+<p><span style="color:#cc0000"><strong>High-frequency data</strong></span> are observations on variables taken daily or at a finer time scale, and are often irregularly spaced over time. <br></p>
+<p>As a result of advanced computational power in recent decades, high frequency data can be accurately collected at an efficient rate for analysis. <br></p>
+<p>Possible issues when dealing with high-frequency data:</p>
+<ul>
+<li>Irregular time intervals between observations</li>
+<li>Market microstructure noise</li>
+<li>Non-normal asset return distributions (e.g.&nbsp;fat tail distributions)</li>
+<li>Volatility clustering and long memory in absolute values of returns</li>
+<li>High computational loads and related “Big data” problems</li>
+</ul>
+</section>
+<section id="examples-of-high-frequency-data" class="slide level2 smaller">
+<h2>Examples of high-frequency data</h2>
+<ul>
+<li>Trade and quote data (databases of NYSE, AMEX, NASDAQ etc.)</li>
+<li>Fixed level order book data</li>
+<li>Messages on all limit order activities</li>
+<li>Data on order book snapshots</li>
+</ul>
+</section>
+<section id="high-dimensional-data" class="slide level2 smaller">
+<h2>High-dimensional data</h2>
+<p><span style="color:#cc0000"><strong>High-dimensional data</strong></span> are observations of a multivariate process <span style="color:#213E12">(p variables/features)</span>, where <span style="color:#213E12">p</span> and the number of observations <span style="color:#213E12">n</span> approaches infinity, but <span style="color:#213E12">p/n</span> approaches <span style="color:#213E12">a</span> certain, positive constant <span style="color:#213E12">c</span>. <br></p>
+<p>Many classical statistical limit theorems do not hold any more for high-dimensional data. Moreover, dealing with high-dimensional data probably gets computationally complex. <br> Possible issues when dealing with high-dimensional data:</p>
+<ul>
+<li>Statistical inference might not be feasible in the classical way (corrections may be required)</li>
+<li>Classical models could be too complex</li>
+<li>High computational loads and related “Big data” problems</li>
+<li>Gene expressions (micro arrays)</li>
+<li>High-resolution images</li>
+<li>Movie, music (ratings)</li>
+</ul>
+</section>
+<section id="high-dimensional-data-1" class="slide level2">
+<h2>High-dimensional data</h2>
+<div style="text-align: center">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="363c234a_1.png" width="500"></p>
+<p></p><figcaption>Figure: Genome sequence (Venter et al.&nbsp;2001, The Sequence of the Human Genome)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="geospatial-data" class="slide level2" style="text-align: center">
+<h2>Geospatial Data</h2>
+</section>
+<section id="spatial-stochastic-processes" class="slide level2 smaller">
+<h2>Spatial stochastic processes</h2>
+<p>Stochastic processes are (random) observations drawn from data-generating process, which have a certain order in a predefined space, e.g.</p>
+<ul>
+<li>time series (daily returns of a financial asset, acceleration of a car (each second, millisecond, etc.), …)</li>
+<li>spatial processes (today’s (maximum) wind speed at different locations, particulate matter distribution in the atmosphere, …)</li>
+<li>spatiotemporal processes (concentration of air pollutants at several locations observed over time, satellite measurements of CO2, …)</li>
+</ul>
+<p><br> Classical statistical methods, like ordinary-least squares estimators of linear/nonlinear regression models, typically require independent data. Meaning, observations should not depend on other observations. But, …</p>
+</section>
+<section id="theoretical-framework" class="slide level2 smaller">
+<h2>Theoretical framework</h2>
+<p>Let <span class="math inline">\(s ∈ R^d\)</span> be a location in the d-dimensional space. This covers</p>
+<ul>
+<li>temporal domains (d = 1)</li>
+<li>spatial domains (d &gt; 1)</li>
+<li>spatiotemporal domains (d &gt; 2, where 1 dimension represents time)</li>
+</ul>
+<p>However, we typically observe data only in a finite space <span class="math inline">\(D ⊂ R^d\)</span>. Here, we consider that D is fixed (non random). <br></p>
+<p>Further, let Z(s) be (univariate) random variable (datum) at location s, i.e., Z(s) ∈ R. Note that one might also consider multivariate variables <span class="math inline">\(Z = (Z_1, . . . , Z_p)′\)</span>. Now, a spatial stochastic process is defined as : <span class="math display">\[{Z(s) : s ∈ D}.\]</span> <br> Moreover, denote the observed process by <span class="math display">\[{z(s) : s ∈ D} .\]</span></p>
+</section>
+<section id="theoretical-framework-1" class="slide level2 smaller">
+<h2>Theoretical framework</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Example</strong></p>
+</div>
+<div class="callout-content">
+<p>Lead concentration at several location along the river Meuse</p>
+</div>
+</div>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Lead concentration</strong></p>
+</div>
+<div class="callout-content">
+<p>Spatial locations <span class="math inline">\(s_1, . . . , s_5\)</span> with <span class="math inline">\(s_i = (s_{i,x}, s_{i,y})′\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(i\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(s_{i,x}\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(s_{i,y}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">181072</td>
+<td style="text-align: center;">333611</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">181025</td>
+<td style="text-align: center;">333558</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">181165</td>
+<td style="text-align: center;">333537</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">181298</td>
+<td style="text-align: center;">333484</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">181307</td>
+<td style="text-align: center;">333330</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="theoretical-framework-2" class="slide level2">
+<h2>Theoretical framework</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Lead concentration</strong></p>
+</div>
+<div class="callout-content">
+<p>Observed spatial process <span class="math inline">\({z(s) : s ∈ D}\)</span>, where <span class="math inline">\(D = {s_1, . . . , s_5}\)</span></p>
+<table>
+<caption>Demonstration of pipe table syntax</caption>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(i\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(s_{i,x}\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(s_{i,y}\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(z(s_i)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span style="color:#999999">181072</span></td>
+<td style="text-align: center;"><span style="color:#999999">333611</span></td>
+<td style="text-align: center;">299</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span style="color:#999999">181025</span></td>
+<td style="text-align: center;"><span style="color:#999999">333558</span></td>
+<td style="text-align: center;">277</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><span style="color:#999999">181165</span></td>
+<td style="text-align: center;"><span style="color:#999999">333537</span></td>
+<td style="text-align: center;">199</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;"><span style="color:#999999">181298</span></td>
+<td style="text-align: center;"><span style="color:#999999">333484</span></td>
+<td style="text-align: center;">116</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;"><span style="color:#999999">181307</span></td>
+<td style="text-align: center;"><span style="color:#999999">333330</span></td>
+<td style="text-align: center;">117</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="theoretical-framework-3" class="slide level2 smaller">
+<h2>Theoretical framework</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Lead concentration</strong></p>
+</div>
+<div class="callout-content">
+<p>Plotting the observations according to their location in the Euclidean space, the spatial “order” gets apparent.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="89eccef1_1.png" width="350"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="some-properties-of-spatial-processes-assumptions" class="slide level2" style="text-align: center">
+<h2>Some properties of spatial processes (assumptions)</h2>
+</section>
+<section id="spatial-dependence" class="slide level2 smaller">
+<h2>Spatial dependence</h2>
+<p>Observations are likely to be influenced by observations in the close neighborhood. That means we typically observe similar patterns for observations, which are close in space. This influence usually weakens with increasing distance between the observations.</p>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Spatial stochastic process</strong></p>
+</div>
+<div class="callout-content">
+<p>The random process <span class="math inline">\({Z(s)}\)</span> can be defined by a distribution <span class="math inline">\(F_{Z_(s_1),...,Z_(s_n)}\)</span>. <span class="math display">\[F_{Z_(s_1),...,Z_(s_n)}(z_1, . . . , z_n) = P (Z_{(s_1)} ≤ z_1, . . . , Z_{(s_n)} ≤ z_n)\]</span></p>
+<p>P is called probability measure.</p>
+</div>
+</div>
+</div>
+<p>There are certain measures describing characteristics/properties of a distribution function <span class="math inline">\(F\)</span>, like the expectation of <span class="math inline">\(F\)</span>, (co-)variance of <span class="math inline">\(F\)</span>, etc. These measures also define the spatial dependence.</p>
+</section>
+<section id="section-1" class="slide level2 smaller">
+<h2></h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>First-order stationarity If the expectation</strong></p>
+</div>
+<div class="callout-content">
+<div style="text-align: center">
+<p><span class="math inline">\(E(Z(s_i)) = \mu\)</span> for all <span class="math inline">\(i\)</span></p>
+</div>
+<p>the process is called first-order stationary. That is, the mean does not depend on the location.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Spatial dependence</strong></p>
+</div>
+<div class="callout-content">
+<p>Spatial dependence is characterized by <span class="math display">\[Cov(Z(si),Z(sj)) \]</span> for <span class="math inline">\(i \neq j\)</span>. We often need to assume additionally that <span class="math display">\[Cov(Z(si),Z(sj))=C(si −sj),\]</span> that is, the covariance is a function of the difference between <span class="math inline">\(s_i\)</span> and <span class="math inline">\(s_j\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="section-2" class="slide level2 smaller">
+<h2></h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Stationarity</strong></p>
+</div>
+<div class="callout-content">
+<p>If these two assumptions are fulfilled, the process is called weakly stationary.</p>
+</div>
+</div>
+</div>
+<p>This means that the distribution of the random process is the same in all locations and the dependence between the random variables does also not depend on the location, but only on the difference between two locations. In the special case that the dependence is the same into all directions (depending only on the distance between two locations, but not the orientation towards each other), the process is isotropic.</p>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Isotropy</strong></p>
+</div>
+<div class="callout-content">
+<p>If there is a norm <span class="math inline">\(|| · ||\)</span>, such that <span class="math inline">\(C(·)\)</span> is only a function of <span class="math inline">\(||si − sj||\)</span>, the process (or rather <span class="math inline">\(C(·)\)</span>) is called <strong>isotropic</strong>.</p>
+</div>
+</div>
+</div>
+<p>One might also assume that <span class="math inline">\(F_{Z(s)}(z) = P(Z(s) &lt; z)\)</span> for all <span class="math inline">\(i\)</span>, then the distribution of <span class="math inline">\({Z(s)}\)</span> is called to be invariant.</p>
+</section>
+<section id="estimation-from-observed-processes" class="slide level2 smaller">
+<h2>Estimation from observed processes</h2>
+<p>But, how to see if the underlying distribution of an observed process is (weakly stationary or isotropic?</p>
+
+<img data-src="89eccef1_1.png" width="350" class="r-stretch quarto-figure-center"></section>
+<section id="estimation-of-c" class="slide level2 smaller">
+<h2>Estimation of <span class="math inline">\(C(·)\)</span></h2>
+<p>Looking at <span class="math display">\[Var(Z(s_i)−Z(s_j)) = Var(Z(s_i))+Var(Z(s_j))−2Cov(Z(s_i),Z(s_j)),\]</span> we see that there is a relation between <span class="math inline">\(C(s_i − s_j)\)</span> and <span class="math inline">\(Var(Z(s_i) − Z(s_j))\)</span> Suppose additionally that</p>
+<div style="text-align: center">
+<p><span class="math inline">\(Var(Z(s_i)−Z(s_j))=2γ(s_i−s_j)\)</span> for all <span class="math inline">\(i \neq j\)</span> , and <span class="math inline">\(s_i, s_j ∈D\)</span>.</p>
+</div>
+<p>The function <span class="math inline">\(γ\)</span> is called semivariogram (as <span class="math inline">\(2γ\)</span> is called variogram).</p>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong></strong></p>
+</div>
+<div class="callout-content">
+<p>Obviously, <span class="math inline">\(γ(h) = γ(−h)\)</span> and <span class="math inline">\(γ(0) = 0\)</span>, but <span class="math inline">\(γ(h)\)</span> approaches a certain constant <span class="math inline">\(c0\)</span> as h goes to zero. This constant is the so-called nugget effect.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="estimation-of-c-1" class="slide level2 smaller">
+<h2>Estimation of <span class="math inline">\(C(·)\)</span></h2>
+<p>For modelling spatial dependence, often certain parametric models are estimated for <span class="math inline">\(γ\)</span>.</p>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Example of an variogram model</strong></p>
+</div>
+<div class="callout-content">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="lecture-2-SS23_files/mportant-characteristics-of-a-semivariogram-The-nugget-sill-and-range-are-commonly.png" width="420"></p>
+<p></p><figcaption>Source: SAS support,online</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="estimation-of-c-2" class="slide level2 smaller">
+<h2>Estimation of <span class="math inline">\(C(·)\)</span></h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Variogram models</strong></p>
+</div>
+<div class="callout-content">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="lecture-2-SS23_files/Checkliste.jpeg"></p>
+<p></p><figcaption>Hartkamp, A. D., De Beurs, K., Stein, A., &amp; White, J. W. (1999). Interpolation techniques for climate variables</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="estimation-of-c-3" class="slide level2 smaller">
+<h2>Estimation of C(·)</h2>
+<p>But, let us come back to the estimation of <span class="math inline">\(C(·)\)</span>. In general, we denote the estimator of <span class="math inline">\(a\)</span> parameter <span class="math inline">\(a\)</span> by <span class="math inline">\(aˆ\)</span>. <br>Common estimation methods are, for instance,</p>
+<ul>
+<li>Least-Squares estimators</li>
+<li>Maximum-Likelihood estimators</li>
+<li>Bayesian estimators</li>
+<li>Method-of-Moments estimators</li>
+<li>…</li>
+</ul>
+<p>To find a method-of-moments estimator, we simply use sample estimates (sample mean (average), sample variance, …) to estimate the moments of a certain model. If these moments depend on the parameters to be estimated, we get a system of equations, which can be solved with respect to the parameters.</p>
+</section>
+<section id="estimation-of-c-4" class="slide level2 smaller">
+<h2>Estimation of <span class="math inline">\(C(·)\)</span></h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Method-of-Moments estimator for <span class="math inline">\(γ\)</span> (Matheron 1962)</strong></p>
+</div>
+<div class="callout-content">
+<p>An estimator of <span class="math inline">\(γ\)</span> is given by <span class="math display">\[2\hatγ(h) = \frac{1}{|\Xi(h)|} \sum_{\Xi(h)}(z(s_i) − z(s_j))^2\]</span> where <span class="math inline">\(\Xi(h)\)</span> is the set of all observations, where <span class="math inline">\(s_i − s_j = h\)</span>, i.e., <span class="math display">\[\Xi(h)=\{(s_i,s_j):s_i−s_j =h;i,j=1,...,n\}.\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="estimation-of-c-5" class="slide level2 smaller">
+<h2>Estimation of <span class="math inline">\(C(·)\)</span></h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Example: lead concentration</strong></p>
+</div>
+<div class="callout-content">
+<p>Observed spatial process <span class="math inline">\(\{z(s) : s ∈ D\}\)</span>, where <span class="math inline">\(D = \{s_1, . . . , s_5\}\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(i\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(s_{i,x}\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(s_{i,y}\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(z(s_i)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">181072</td>
+<td style="text-align: center;">333611</td>
+<td style="text-align: center;">299</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">181025</td>
+<td style="text-align: center;">333558</td>
+<td style="text-align: center;">277</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">181165</td>
+<td style="text-align: center;">333537</td>
+<td style="text-align: center;">199</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">181298</td>
+<td style="text-align: center;">333484</td>
+<td style="text-align: center;">116</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">181307</td>
+<td style="text-align: center;">333330</td>
+<td style="text-align: center;">117</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="estimation-of-c-6" class="slide level2 smaller">
+<h2>Estimation of <span class="math inline">\(C(·)\)</span></h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Example: lead concentration</strong></p>
+</div>
+<div class="callout-content">
+<p>Differences <span class="math inline">\(h = s_i − s_j\)</span></p>
+<table>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 19%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(i/j\)</span></th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">( 0, 0)</td>
+<td style="text-align: center;">( 47, 53)</td>
+<td style="text-align: center;">( -93, 74)</td>
+<td style="text-align: center;">(-226, 127)</td>
+<td style="text-align: center;">(-235, 281)</td>
+</tr>
+<tr class="even">
+<td>2.</td>
+<td style="text-align: center;">(-47, -53)</td>
+<td style="text-align: center;">( 0, 0)</td>
+<td style="text-align: center;">(-140, 21)</td>
+<td style="text-align: center;">(-273, 74)</td>
+<td style="text-align: center;">(-282, 228)</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">93, -74)</td>
+<td style="text-align: center;">(140, -21)</td>
+<td style="text-align: center;">( 0, 0)</td>
+<td style="text-align: center;">(-133, 53)</td>
+<td style="text-align: center;">(-142, 207)</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">(226, -127)</td>
+<td style="text-align: center;">(273, -74)</td>
+<td style="text-align: center;">( 133, -53)</td>
+<td style="text-align: center;">( 0, 0)</td>
+<td style="text-align: center;">( -9, 154)</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">(235, -281)</td>
+<td style="text-align: center;">(282, -228)</td>
+<td style="text-align: center;">( 142, -207)</td>
+<td style="text-align: center;">( 9, -154)</td>
+<td style="text-align: center;">( 0, 0)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Problem</strong>: we do not have even one pair of equal differences ! because distance between points is irregular, data are not “evenly” distributed across space)</p>
+</div>
+</div>
+</div>
+</section>
+<section id="estimation-of-c-7" class="slide level2 smaller">
+<h2>Estimation of <span class="math inline">\(C(·)\)</span></h2>
+<p>For data, which is not regularly spaced in <span class="math inline">\(R^d\)</span> , we must alter the definition of <span class="math inline">\(Ξ(h)\)</span> , e.g.&nbsp;as follows <span class="math display">\[Ξ(h)=\{(s_i,s_j):h−l&lt;s_i−s_j ≤h+l;i,j=1,...,n\}.\]</span></p>
+<p>Meaning, we allow for a certain tolerance <span class="math inline">\(l\)</span>. However, this also implies that the estimated variogram is “somehow” smoothed.</p>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Estimation of <span class="math inline">\(C(·)\)</span></strong></p>
+</div>
+<div class="callout-content">
+<p>To estimate the covariogram <span class="math inline">\(C(·)\)</span>, we can follow the same approach, i.e., <span class="math display">\[\hat{C}(h) = \frac{1}{|\Xi(h)|} \sum_{\Xi(h)}(z(s_i) − \bar{z})(z(s_j) - \bar{z} )\]</span></p>
+<p>where <span class="math inline">\(\bar{z}\)</span> is the sample mean (average).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="example-1" class="slide level2 smaller">
+<h2>Example</h2>
+<p>Consider <span class="math inline">\(C(·)\)</span> as function of <span class="math inline">\(||h||\)</span> instead of h. That is, we now estimate the variogram based on distances between observations. In this case, <span class="math inline">\(Ξ(||h||)\)</span> is a set of all locations with equal distance <span class="math inline">\(||h||\)</span>. Note that one can also introduce a certain tolerance if dealing with irregularly spaced data.</p>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Example: lead concentration</strong></p>
+</div>
+<div class="callout-content">
+<p>Distances <span class="math inline">\(||h||_2\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(i/j\)</span></th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">70.84</td>
+<td style="text-align: center;">118.85</td>
+<td style="text-align: center;">259.24</td>
+<td style="text-align: center;">366.31</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">70.84</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">141.57</td>
+<td style="text-align: center;">282.85</td>
+<td style="text-align: center;">362.64</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">118.85</td>
+<td style="text-align: center;">141.57</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">143.17</td>
+<td style="text-align: center;">251.02</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">259.24</td>
+<td style="text-align: center;">282.85</td>
+<td style="text-align: center;">143.17</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">154.26</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">366.31</td>
+<td style="text-align: center;">362.64</td>
+<td style="text-align: center;">251.02</td>
+<td style="text-align: center;">154.26</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="example-2" class="slide level2">
+<h2>Example</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Example: lead concentration <span class="math inline">\(\hat{γ}\)</span></strong></p>
+</div>
+<div class="callout-content">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="lecture-2-SS23_files/unnamed-chunk-23-1.png" width="400"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="footer footer-default">
+<p>otto@ikg.uni-hannover.de</p>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="lecture-2-SS23_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="lecture-2-SS23_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lecture-2-SS23_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lecture-2-SS23_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lecture-2-SS23_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lecture-2-SS23_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="lecture-2-SS23_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lecture-2-SS23_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lecture-2-SS23_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lecture-2-SS23_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'convex',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        target: function(trigger) {
+          return trigger.previousElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto-reveal',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
