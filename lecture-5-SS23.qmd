@@ -380,7 +380,9 @@ Multiple Instruction, Multiple Data (MIMD):
 
     -   Perfect scaling means problem $Px$ runs in same time as single processor run
 
+::: {style="text-align: center"}
 # Example
+:::
 
 ## Spatial and Temporal Dimensions
 
@@ -415,11 +417,11 @@ Mortality rates in all U.S. counties should be explained by several environmenta
 
 . . .
 
--   Observations are predicted for all grid cells based on the spatial <br> covariogram (or covariance matrix)
+-   Observations are predicted for all grid cells based on <br> the spatial  covariogram (or covariance matrix)
 
 . . .
 
--   Average of all predictions in several grid cells lying in one county
+-   Average of all predictions in several grid cells lying in <br> one county
 
 . . .
 

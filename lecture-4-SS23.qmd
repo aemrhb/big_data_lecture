@@ -1,6 +1,6 @@
 ---
 title: "Big Geospatial Data"
-author: " Prof.Dr. Philipp Otto <br>Leibniz Universtity Hannover, Germany<br>April 21, 2023"
+author: " Prof. Dr. Philipp Otto <br>Leibniz Universtity Hannover, Germany<br>April 21, 2023"
 format: 
   revealjs:
     footer: "Philipp Otto (Leibniz University Hannover)"
