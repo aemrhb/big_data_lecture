@@ -255,7 +255,7 @@ Let $s ∈ R^d$ be a location in the d-dimensional space. This covers
 
 However, we typically observe data only in a finite space $D ⊂ R^d$. Here, we consider that D is fixed (non random). <br>
 
-Further, let Z(s) be (univariate) random variable (datum) at location s, i.e., Z(s) ∈ R. Note that one might also consider multivariate variables $Z = (Z_1, . . . , Z_p)′$. Now, a spatial stochastic process is defined as : $${Z(s) : s ∈ D}.$$ <br> Moreover, denote the observed process by $${z(s) : s ∈ D} .$$
+Further, let Z(s) be (univariate) random variable (datum) at location s, i.e., Z(s) ∈ R. Note that one might also consider multivariate variables $Z = (Z_1, . . . , Z_p)′$. Now, a spatial stochastic process is defined as : $$\{Z(s) : s ∈ D\}.$$ <br> Moreover, denote the observed process by $$\{z(s) : s ∈ D\} .$$
 
 ## Theoretical framework {.smaller}
 
@@ -322,7 +322,7 @@ Observations are likely to be influenced by observations in the close neighborho
 ::: callout-tip
 ## Spatial stochastic process
 
-The random process ${Z(s)}$ can be defined by a distribution $F_{Z_(s_1),...,Z_(s_n)}$. $$F_{Z_(s_1),...,Z_(s_n)}(z_1, . . . , z_n) = P (Z_{(s_1)} ≤ z_1, . . . , Z_{(s_n)} ≤ z_n)$$
+The random process ${Z(s)}$ can be defined by a distribution $F_{Z_(s_1),...,Z_(s_n)}$. $$\\ F_{Z_(s_1),...,Z_(s_n)}(z_1, . . . , z_n) = P (Z_{(s_1)} ≤ z_1, . . . , Z_{(s_n)} ≤ z_n)$$
 
 P is called probability measure.
 :::
@@ -344,7 +344,7 @@ the process is called first-order stationary. That is, the mean does not depend 
 ::: callout-tip
 ## Spatial dependence
 
-Spatial dependence is characterized by $$Cov(Z(si),Z(sj)) $$ for $i \neq j$. We often need to assume additionally that $$Cov(Z(si),Z(sj))=C(si −sj),$$ that is, the covariance is a function of the difference between $s_i$ and $s_j$.
+Spatial dependence is characterized by $$\\ Cov(Z(si),Z(sj)) $$ for $i \neq j$. We often need to assume additionally that $$\\ Cov(Z(si),Z(sj))=C(si −sj),$$ that is, the covariance is a function of the difference between $s_i$ and $s_j$.
 :::
 
 ##  {.smaller}
@@ -386,7 +386,7 @@ The function $γ$ is called semivariogram (as $2γ$ is called variogram).
 ::: callout-tip
 ## 
 
-Obviously, $γ(h) = γ(−h)$ and $γ(0) = 0$, but $γ(h)$ approaches a certain constant $c0$ as $h$ goes to zero. This constant is the so-called nugget effect.
+Obviously, $γ(h) = γ(−h)$ and $γ(0) = 0$, but $γ(h)$ approaches a certain constant $c_0$ as $h$ goes to zero. This constant is the so-called nugget effect.
 :::
 
 ## Estimation of $C(·)$ {.smaller}
@@ -396,7 +396,7 @@ For modelling spatial dependence, often certain parametric models are estimated 
 ::: {.callout-tip style="text-align: center"}
 ## Example of an variogram model
 
-![Source: SAS support,online](lecture-2-SS23_files/mportant-characteristics-of-a-semivariogram-The-nugget-sill-and-range-are-commonly.png){fig-align="center" width="420"}
+![$$\\$$ Source: SAS support,online](lecture-2-SS23_files/mportant-characteristics-of-a-semivariogram-The-nugget-sill-and-range-are-commonly.png){fig-align="center" width="420"}
 :::
 
 ## Estimation of $C(·)$ {.smaller}
@@ -404,7 +404,7 @@ For modelling spatial dependence, often certain parametric models are estimated 
 ::: {.callout-tip style="text-align: center"}
 ## Variogram models
 
-![Hartkamp, A. D., De Beurs, K., Stein, A., & White, J. W. (1999). Interpolation techniques for climate variables](lecture-2-SS23_files/Checkliste.jpeg){fig-align="center"}
+![$$\\$$ Hartkamp, A. D., De Beurs, K., Stein, A., & White, J. W. (1999). Interpolation techniques for climate variables](lecture-2-SS23_files/Checkliste.jpeg){fig-align="center"}
 :::
 
 ## Estimation of $C(·)$ {.smaller}
@@ -424,7 +424,7 @@ To find a method-of-moments estimator, we simply use sample estimates (sample me
 ::: callout-tip
 ## Method-of-Moments estimator for $γ$ (Matheron 1962)
 
-An estimator of $γ$ is given by $$2\hatγ(h) = \frac{1}{|\Xi(h)|} \sum_{\Xi(h)}(z(s_i) − z(s_j))^2$$ where $\Xi(h)$ is the set of all observations, where $s_i − s_j = h$, i.e., $$\Xi(h)=\{(s_i,s_j):s_i−s_j =h;i,j=1,...,n\}.$$
+An estimator of $γ$ is given by $$\\ 2\hatγ(h) = \frac{1}{|\Xi(h)|} \sum_{\Xi(h)}(z(s_i) − z(s_j))^2$$ where $\Xi(h)$ is the set of all observations, where $s_i − s_j = h$, i.e., $$\\ \Xi(h)=\{(s_i,s_j):s_i−s_j =h;i,j=1,...,n\}.$$
 :::
 
 ## Estimation of $C(·)$
@@ -433,7 +433,10 @@ An estimator of $γ$ is given by $$2\hatγ(h) = \frac{1}{|\Xi(h)|} \sum_{\Xi(h)}
 ## Example: lead concentration
 
 ::: {style="text-align: center"}
+
 Observed spatial process $\{z(s) : s ∈ D\}$, where $D = \{s_1, . . . , s_5\}$
+
+$$\\$$
 
 | $i$ | $s_{i,x}$ | $s_{i,y}$ | $z(s_i)$ |
 |:---:|:---------:|:---------:|:--------:|
@@ -465,14 +468,14 @@ Differences $h = s_i − s_j$
 
 ## Estimation of $C(·)$ {.smaller}
 
-For data, which is not regularly spaced in $R^d$ , we must alter the definition of $Ξ(h)$ , e.g. as follows $$Ξ(h)=\{(s_i,s_j):h−l<s_i−s_j ≤h+l;i,j=1,...,n\}.$$
+For data, which is not regularly spaced in $R^d$ , we must alter the definition of $Ξ(h)$ , e.g. as follows $$\\ Ξ(h)=\{(s_i,s_j):h−l<s_i−s_j ≤h+l;i,j=1,...,n\}.$$
 
 Meaning, we allow for a certain tolerance $l$. However, this also implies that the estimated variogram is "somehow" smoothed.
 
 ::: callout-tip
 ## Estimation of $C(·)$
 
-To estimate the covariogram $C(·)$, we can follow the same approach, i.e., $$\hat{C}(h) = \frac{1}{|\Xi(h)|} \sum_{\Xi(h)}(z(s_i) − \bar{z})(z(s_j) - \bar{z} )$$
+To estimate the covariogram $C(·)$, we can follow the same approach, i.e., $$\\ \hat{C}(h) = \frac{1}{|\Xi(h)|} \sum_{\Xi(h)}(z(s_i) − \bar{z})(z(s_j) - \bar{z} )$$
 
 where $\bar{z}$ is the sample mean (average).
 :::
@@ -485,6 +488,7 @@ Consider $C(·)$ as function of $||h||$ instead of h. That is, we now estimate t
 ## Example: lead concentration
 
 Distances $||h||_2$
+$$\\$$
 
 | $i/j$ |   1    |   2    |   3    |   4    |   5    |
 |-------|:------:|:------:|:------:|:------:|:------:|
@@ -500,5 +504,5 @@ Distances $||h||_2$
 ::: {.callout-tip style="text-align: center"}
 ## Example: lead concentration $\hat{γ}$
 
-![](lecture-2-SS23_files/unnamed-chunk-23-1.png){fig-align="center" width="400"}
+![$$\\$$](lecture-2-SS23_files/unnamed-chunk-23-1.png){fig-align="center" width="400"}
 :::
