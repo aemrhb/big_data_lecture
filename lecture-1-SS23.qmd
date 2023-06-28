@@ -26,18 +26,24 @@ editor: source
 
 ## references
 
+::: callout-tip
 -   Contact : <br>Individual office hours on appointment <br>philipp.otto\@ikg.uni-hannover.de<br>
+::: 
 
+::: callout-tip
 -   Schedule of the course : <br>Weekly lectures: Philipp Otto (Friday 15:45 - 17:15, A255) <br>Tutorials: Mohammadreza Nasiriboroujeni (Friday 17:30 - 19:00 , A255) <br>Home assignments: passing the home assignments is not mandatory, but they will be discussed in the tutorials
+:::
 
 ## references
 
+::: callout-tip
 -   Examination : <br> 5 ECTS: oral examination (25 minutes)
+:::
+
+::: callout-tip
 -   Oral Examination : <br> In total 25 minutes, structured as follows: <br> 10 minutes: presentation of a topic of personal choice <br> 10 minutes: questions about the contents of the lecture <br> 5 minutes: questions about discussed program implementations
+:::
 
-## Literature {.smaller}
-
-<br>Bivand, R. S., Pebesma, E. J., Gomez-Rubio, V. & Pebesma, E. J. (2008), Applied spatial data analysis with R, Vol. 747248717, Springer. <br>Cressie, N. (1993), Statistics for Spatial Data, Wiley. URL: https://books.google.de/books?id=4L dCgAAQBAJ <br>Cressie, N. & Wikle, C. K. (2011), Statistics for Spatio-Temporal Data, Wiley. <br>Dalgaard, P. (2008), Introductory statistics with R, Springer Science & Business Media. <br>Karimi, H. A. (2014), Big Data: techniques and technologies in geoinformatics, Crc Press.
 
 ## Lectures {.smaller}
 
@@ -59,3 +65,8 @@ editor: source
 | 15.07.22                    | A255   | Discussion of scientific papers (Werner 2019)                     |
 | 23.07.22                    | A255   | Q-A session                                                       |
 | 08.08.22 -- 12.08.22 (exp.) | At IKG | **Oral Exams**                                                    |
+
+
+## Literature {.smaller}
+
+<br>Bivand, R. S., Pebesma, E. J., Gomez-Rubio, V. & Pebesma, E. J. (2008), Applied spatial data analysis with R, Vol. 747248717, Springer. <br>Cressie, N. (1993), Statistics for Spatial Data, Wiley. URL: https://books.google.de/books?id=4L dCgAAQBAJ <br>Cressie, N. & Wikle, C. K. (2011), Statistics for Spatio-Temporal Data, Wiley. <br>Dalgaard, P. (2008), Introductory statistics with R, Springer Science & Business Media. <br>Karimi, H. A. (2014), Big Data: techniques and technologies in geoinformatics, Crc Press.
