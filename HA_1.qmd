@@ -1,5 +1,5 @@
 ---
-title: "Statistical Data Science - Home assignment 1"
+title: "Big Geospatial Data - Home assignment 1"
 author: "Prof. Dr. Philipp Otto"
 format: pdf
 editor: visual

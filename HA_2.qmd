@@ -1,5 +1,5 @@
 ---
-title: "Statistical Data Science - Home assignment 2"
+title: "Big Geospatial Data - Home assignment 2"
 author: "Prof. Dr. Philipp Otto"
 format: pdf
 editor: visual
@@ -17,12 +17,11 @@ Evaluation:
 
 \subsection{Problem - Simulation of dependent random processes}
 
-Simulate spatial lattice data $\{Z({s}) : {s} = (s_1, s_2)' \in {Z}^2, 1 \leq s_1, s_2 \leq d \}$ from a gaussian distribution, where the covariance is
-\begin{equation}
+Simulate spatial lattice data $\{Z({s}) : {s} = (s_1, s_2)' \in {Z}^2, 1 \leq s_1, s_2 \leq d \}$ from a gaussian distribution, where the covariance is \begin{equation}
   Cov(Z({s}_i), Z({s}_j)) = a \exp(- b ||{h}||) \qquad \text{for all} \quad i,j = 1, \ldots, n
-\end{equation}
-with ${h} = {s}_i - {s}_j$, $a > 0$, $b \geq 0$. Choose initially $d = 25$, $a = 0.2$, $b = 0.15$, and $|| \cdot ||$ as Euclidean norm.
+\end{equation} with ${h} = {s}_i - {s}_j$, $a > 0$, $b \geq 0$. Choose initially $d = 25$, $a = 0.2$, $b = 0.15$, and $|| \cdot ||$ as Euclidean norm.
 
+```{=tex}
 \begin{enumerate}
 \item Compare the resulting random fields $\{z({s})\}$ for different choices of $a$ and $b$. How $a$ and $b$ can be interpreted?
 \item Compare the results for this so-called exponential covariance model to
@@ -33,50 +32,43 @@ with ${h} = {s}_i - {s}_j$, $a > 0$, $b \geq 0$. Choose initially $d = 25$, $a =
 \end{enumerate}
 \item Compare the results for different norms $|| \cdot ||$, e.g. $|| \cdot ||_p$ for $p \in \{1, 2, \infty\}$. Do the norms have an impact on the spatial dependence? In order to compare the results, the same random seed should be specified.
 \end{enumerate}
-
+```
 \subsection{Problem - Monte Carlo simulation study - computation time}
 
 Simulate the above described spatial model for increasing sizes of the spatial random field. Perform a Monte Carlo simulation study with $m = 100$ replications to evaluate the computation time, if the number of observations $n$ is increasing ($n \in \{16, 100, 1024, 4900\}$). Visualize your results graphically and shortly explain them.
 
 \subsection{Problem: Covariance tapering}
 
-For covariance tapering, zeros are introduced into ${C}$ in order to make it sparse The tapered covariance function is then given by the product
-  \begin{equation*}
+For covariance tapering, zeros are introduced into ${C}$ in order to make it sparse The tapered covariance function is then given by the product \begin{equation*}
     C_{tap}({s}_j - {s}_i) = C({s}_j - {s}_i) C_\theta({s}_j - {s}_i)
   \end{equation*}
 
 Explain why the tapering matrix $C_\theta$ must be chosen as valid covariance function (i.e., positive definite).
 
-
-
 \subsection{Problem: Simulation of sparse matrices}
 
 Simulate binary matrices with 60, 80, 95 per cent zero elements. The matrices should be of dimension $100 \times 100$ and the random number generator should be initialized by a random seed.
 
-
+```{=tex}
 \begin{enumerate}
   \item Explain the difference between sparse matrices and band matrices.
   \item Permute the simulated matrix using the Cuthill-McKee algorithm. Compute the bandwidth of the permuted matrices.
   \item Why band matrices are (sometimes) preferred in computational statistics?
   \item Compute the determinant!
 \end{enumerate}
-
+```
 \subsection{Problem: Monte Carlo simulation study - minimal bandwidth}
 
-
-Simulate the above described binary matrices and perform a Monte Carlo simulation study with $m = 1000$ replications. Compute the average minimal bandwidth, which can be achieved by the Cuthill-McKee algorithm.
-Visualize your results graphically and shortly explain them.
-
-
+Simulate the above described binary matrices and perform a Monte Carlo simulation study with $m = 1000$ replications. Compute the average minimal bandwidth, which can be achieved by the Cuthill-McKee algorithm. Visualize your results graphically and shortly explain them.
 
 \subsection{Problem: Monte Carlo simulation study - sparse matrices}
 
-
 Simulate the above described binary matrices and perform a Monte Carlo simulation study with $m = 1000$ replications to evaluate the computation time and required memory (RAM) for computing the determinant. Assess the computational advantages
+
+```{=tex}
 \begin{enumerate}
   \item if a class for sparse matrices is used (e.g., C++ Eigen::SparseMatrix, Python scipy.sparse, R Matrix, ...),
   \item if the matrices are permuted by the Cuthill-McKee algorithm.
 \end{enumerate}
-Furthermore, how the computation time changes if the dimension of the matrices increases ($20 \times 20$, $50 \time 50$, $100 \times 100$)
-Visualize all results graphically and shortly explain them.
-
+```
+Furthermore, how the computation time changes if the dimension of the matrices increases ($20 \times 20$, $50 \time 50$, $100 \times 100$) Visualize all results graphically and shortly explain them.
