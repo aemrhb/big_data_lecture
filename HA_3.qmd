@@ -1,0 +1,75 @@
+---
+title: "Statistical Data Science - Home assignment 3"
+author: "Prof. Dr. Philipp Otto"
+format: pdf
+editor: visual
+---
+
+::: callout-note
+issue date :
+
+Submission date :
+
+Name, matriculation number:
+
+Evaluation:
+:::
+
+
+
+\subsection{Problem - Proof decision problems}
+
+Proof that almost every decision problem is not solvable in finite time!
+
+\subsection{Problem - Time complexity}
+
+Compute the asymptotic (time) complexity of the following code fragments:
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth, page = 24]{code1}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth, page = 24]{code2}
+\end{figure}
+
+
+\newpage
+
+
+
+\subsection{Problem - P versus NP}
+
+Explain the $P$ versus $NP$ problem!
+
+\subsection{Problem - Maximum speedup}
+
+Let $p$ be the number of parallel processes and $\pi$ denotes the fraction of code that can be parallelized.
+
+\begin{itemize}
+  \item Compute an upper bound for the speed-up that can be obtained by parallelizing the code.
+  \item Visualize the (theoretical) speed-up for different values of $p$ and $\pi$.
+  \item Explain the difference between weak and strong scaling.
+\end{itemize}
+
+Furthermore, perform a Monte Carlo simulation study to illustrate the speed-up, which can achieved by parallelizing. For this reason, simulate $10^8$ gaussian random numbers with $\mu = 1$ and $\sigma = 2$. Distribute the simulation on $p = 1$ and $p = 2$ parallel processes. Estimate the required computation time with $m = 1000$ replications.
+
+
+\subsection{Problem - Model selection}
+
+In Figure , the efficiency of several models is given for the empirical example considered in Vetter, P., Schmid, W., Schwarze, R. (2016). Which model is the best under the following restrictions:
+\begin{enumerate}
+\item ${\Sigma}^{-1}\tilde{{Z}}$ should be computed in less than $0.01$ seconds
+\item ${\Sigma}^{-1}\tilde{{Z}}$ should be computed in less than $0.2$ seconds
+\item ${\Sigma}^{-1}\tilde{{Z}}$ should be computed in less than $0.5$ seconds
+\item the mean squared prediction error should be less than $2$ and ${\Sigma}^{-1}\tilde{{Z}}$ should be computed as fast as possible
+\end{enumerate}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth, page = 24]{VSS_2014}
+  \caption{Vetter, P., Schmid, W., Schwarze, R. (2016). Efficient approximation of the spatial covariance function for large datasets - analysis of atmospheric CO2 concentrations, Journal of Environmental Statistics, 6(3); Table 3}\label{fig:vss}
+\end{figure}
