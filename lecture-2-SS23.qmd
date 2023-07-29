@@ -100,6 +100,8 @@ Specific attributes that define Big Data - The Three/Four V's of Big Data:
 
 : [Development of the storage and transmission of data (Hilbert, Lopez 2011, The World's Technological Capacity to Store, Communicate, and Compute Information)]{style="color:##1D4F6B"}
 
+Table: Development of the storage and transmission of data (Hilbert, Lopez 2011, The World’s Technological Capacity to Store, Communicate, and Compute Information)
+
 ## What is Big Data? {.smaller}
 
 [**Volume :**]{style="color:#cc0000"}
@@ -202,6 +204,7 @@ Possible issues when dealing with high-frequency data:
 -   Non-normal asset return distributions (e.g. fat tail distributions)
 -   Volatility clustering and long memory in absolute values of returns
 -   High computational loads and related "Big data" problems
+
 
 ## Examples of high-frequency data {.smaller}
 

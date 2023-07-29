@@ -241,6 +241,7 @@ Where the center points of the basis functions should be placed?
 An increasing number of basis functions leads to better approximations, but causes higher computational costs. Thus, there is a trade-off between computational advantages and the explained spatial variations.
 
 ## Fixed-Rank Kriging
+![](b_f.png){fig-align="center" width="420"}
 
 ::: {style="text-align: center"}
 # Full-Scale Approximation

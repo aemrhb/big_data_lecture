@@ -174,7 +174,9 @@ But, why to parallelize computer programs?
 
 -   Use parallel hardware
 
+::: {style="text-align: center"}
 # Some Side Notes: GIScience Grand Challenges
+:::
 
 ## GIScience Grand Challenges
 
@@ -222,21 +224,21 @@ U.S. National Research Council (NRC) **2010** report entitled "Understanding the
 
 . . .
 
--   How to promote sustainability
+-   **How to promote sustainability**
     4.  Where and how will 10 billion people live?
     5.  How will we sustainably feed everyone in the coming decade and beyond?
     6.  How does where we live affect our health?
 
 . . .
 
--   How to recognize and cope with the rapid spatial reorganization of the economy and society
+-   **How to recognize and cope with the rapid spatial reorganization of the economy and society**
     7.  How is the movement of people, goods, and ideas changing the world?
     8.  How is economic globalization affecting inequality?
     9.  How are geopolitical shifts influencing peace and stability?
 
 . . .
 
--   How to leverage technological change for the benefit of society and environment
+-   **How to leverage technological change for the benefit of society and environment**
     10. How might we better observe, analyze, and visualize a changing world?
     11. What are the societal implications of citizen mapping and mapping citizens?
 
@@ -255,6 +257,7 @@ Flynn's Classical Taxonomy
 :::
 
 ## Flynn's Classical Taxonomy
+Single Instruction, Single Data (SISD):
 
 -   A serial (non-parallel) computer
 -   Single Instruction: Only one instruction stream is being acted on by the CPU during any one clock cycle

@@ -36,7 +36,8 @@ A choice of languages for (Spatial) Big Data
 
 ## Programming Languages
 
-Python: Advantages
+**Python:**
+<br> Advantages
 
 -   Nice, modern scripting language
 -   Huge amount of software available
@@ -50,7 +51,8 @@ Drawbacks
 
 ## Programming Languages
 
-R: Advantages
+**R:**
+<br> Advantages
 
 -   Classical language, good documentation
 
